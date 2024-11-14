@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ page import="java.sql.*" %>
-<%@ page import="javax.servlet.http.HttpSession" %>
+<%@ page import="jakarta.servlet.http.HttpSession" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,7 +12,7 @@
     
     String jdbcUrl = "jdbc:mysql://localhost:3306/cs336project";
     String dbUser = "root";  // Your DB username
-    String dbPassword = "2024fall336project";  // Your DB password
+    String dbPassword = "root1234";  // Your DB password
     String username = request.getParameter("username");
     String password = request.getParameter("password");
 
