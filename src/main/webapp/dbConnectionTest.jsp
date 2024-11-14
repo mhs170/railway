@@ -7,9 +7,9 @@
 <body>
 
 <%
-    String jdbcUrl = "jdbc:mysql://localhost:3306/?user=root/cs336project";  // Replace 'yourDatabase' with your actual database name
-    String dbUser = "root";  // Replace with your database username
-    String dbPassword = "2024fall336project";  // Replace with your database password
+    String jdbcUrl = "jdbc:mysql://localhost:3306/cs336project"; 
+    String dbUser = "root";  
+    String dbPassword = "2024fall336project";
 
     Connection conn = null;
 

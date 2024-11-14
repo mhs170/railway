@@ -9,13 +9,13 @@
 <body>
 
 <%
-    // Database connection variables
-    String jdbcUrl = "jdbc:mysql://localhost:3306/?user=root/cs336project";  // Change the URL to your DB
+    
+    String jdbcUrl = "jdbc:mysql://localhost:3306/cs336project";
     String dbUser = "root";  // Your DB username
     String dbPassword = "2024fall336project";  // Your DB password
     String username = request.getParameter("username");
     String password = request.getParameter("password");
-    
+
     Connection conn = null;
     PreparedStatement ps = null;
     ResultSet rs = null;
@@ -28,7 +28,8 @@
         conn = DriverManager.getConnection(jdbcUrl, dbUser, dbPassword);
 
         // Prepare the SQL statement to check user credentials
-        ps = conn.prepareStatement("SELECT * FROM users WHERE username = ? AND password = ?");
+        String sql = "SELECT * FROM users WHERE username = ? AND password = ?";
+        ps = conn.prepareStatement(sql);
         ps.setString(1, username);
         ps.setString(2, password);
 
@@ -37,10 +38,9 @@
 
         // Check if the user exists
         if (rs.next()) {
-            // User found, set attributes in the implicit session
+            // User found, set attributes in the session
             session.setAttribute("username", username);
-            out.println("Login successful! Welcome " + username);
-            
+
             // Redirect to the home page
             response.sendRedirect("home.jsp");
         } else {
