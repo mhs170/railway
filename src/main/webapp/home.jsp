@@ -4,7 +4,7 @@
 %>
     <div style="text-align: center;">
         <h1>Welcome, <%= username %>!</h1>
-        <form action="logout" method="post">
+        <form action="login.jsp" method="post">
             <button type="submit">Logout</button>
         </form>
     </div>
