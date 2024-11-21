@@ -71,6 +71,9 @@
             <button type="submit">Create Account</button>
             
         </form>
+        <form action="login.jsp" method="post">
+            <button type="submit">Back to Login</button>
+        </form>
     </div>
 </body>
 </html>

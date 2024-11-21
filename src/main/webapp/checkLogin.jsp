@@ -12,7 +12,7 @@
     
     String jdbcUrl = "jdbc:mysql://localhost:3306/cs336project";
     String dbUser = "root";  // Your DB username
-    String dbPassword = "2024fall336project";  // Your DB password
+    String dbPassword = "root1234";  // Your DB password
     String username = request.getParameter("username");
     String password = request.getParameter("password");
 
