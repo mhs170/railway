@@ -9,10 +9,9 @@
 <body>
 
 <%
-    
     String jdbcUrl = "jdbc:mysql://localhost:3306/cs336project";
     String dbUser = "root";  // Your DB username
-    String dbPassword = "root1234";  // Your DB password
+    String dbPassword = "2024fall336project";  // Your DB password
     String username = request.getParameter("username");
     String password = request.getParameter("password");
 
@@ -21,28 +20,57 @@
     ResultSet rs = null;
 
     try {
-        // Load the MySQL JDBC driver
         Class.forName("com.mysql.cj.jdbc.Driver");
 
-        // Establish connection
         conn = DriverManager.getConnection(jdbcUrl, dbUser, dbPassword);
 
-        // Prepare the SQL statement to check user credentials
         String sql = "SELECT * FROM users WHERE username = ? AND password = ?";
         ps = conn.prepareStatement(sql);
         ps.setString(1, username);
         ps.setString(2, password);
 
-        // Execute query
         rs = ps.executeQuery();
 
-        // Check if the user exists
         if (rs.next()) {
-            // User found, set attributes in the session
             session.setAttribute("username", username);
 
-            // Redirect to the home page
-            response.sendRedirect("home.jsp");
+            String customerCheckSQL = "SELECT * FROM customers WHERE username = ?";
+            PreparedStatement psCustomer = conn.prepareStatement(customerCheckSQL);
+            psCustomer.setString(1, username);
+            ResultSet rsCustomer = psCustomer.executeQuery();
+
+            if (rsCustomer.next()) {
+                response.sendRedirect("customerHome.jsp");
+            } else {
+                String repCheckSQL = "SELECT * FROM customer_representatives WHERE username = ?";
+                PreparedStatement psRep = conn.prepareStatement(repCheckSQL);
+                psRep.setString(1, username);
+                ResultSet rsRep = psRep.executeQuery();
+
+                if (rsRep.next()) {
+                    response.sendRedirect("customerRepresentativeHome.jsp");
+                } else {
+                    String adminCheckSQL = "SELECT * FROM admin WHERE username = ?";
+                    PreparedStatement psAdmin = conn.prepareStatement(adminCheckSQL);
+                    psAdmin.setString(1, username);
+                    ResultSet rsAdmin = psAdmin.executeQuery();
+
+                    if (rsAdmin.next()) {
+                        response.sendRedirect("adminHome.jsp");
+                    } else {
+                        out.println("Role not found.");
+                    }
+
+                    rsAdmin.close();
+                    psAdmin.close();
+                }
+
+                rsRep.close();
+                psRep.close();
+            }
+
+            rsCustomer.close();
+            psCustomer.close();
         } else {
             out.println("Invalid username or password.");
         }
@@ -50,7 +78,6 @@
         e.printStackTrace();
         out.println("An error occurred: " + e.getMessage());
     } finally {
-        // Close the resources in finally block
         try {
             if (rs != null) rs.close();
             if (ps != null) ps.close();

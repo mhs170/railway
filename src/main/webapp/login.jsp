@@ -44,6 +44,9 @@
         button:hover {
             background-color: #45a049;
         }
+        .button-spacing {
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -58,7 +61,7 @@
             
             <button type="submit">Login</button>
         </form>
-        <form action="createAccount.jsp" method="post">
+        <form action="createAccount.jsp" method="post" class="button-spacing">
             <button type="submit">Create New Account</button>
         </form>
     </div>
