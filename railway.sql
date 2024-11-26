@@ -86,6 +86,7 @@ CREATE TABLE `customers` (
 
 LOCK TABLES `customers` WRITE;
 /*!40000 ALTER TABLE `customers` DISABLE KEYS */;
+INSERT INTO `customers` VALUES ('johndoe','johndoe@gmail.com');
 /*!40000 ALTER TABLE `customers` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -241,7 +242,6 @@ CREATE TABLE `stations` (
 
 LOCK TABLES `stations` WRITE;
 /*!40000 ALTER TABLE `stations` DISABLE KEYS */;
-INSERT INTO `stations` VALUES (1,'30th Street Station Philadelphia','Philadelphia','PA'),(2,'Aberdeen Matawan Station','Aberdeen','NJ'),(3,'Absecon Station','Absecon','NJ'),(4,'Allendale Station','Allendale','NJ'),(5,'Allenhurst Station','Allenhurst','NJ'),(6,'Anderson Street Station','Hackensack','NJ'),(7,'Annandale Station','Clinton','NJ'),(8,'Asbury Park Station','Asbury Park','NJ'),(9,'Atco Station','Atco','NJ'),(10,'Atlantic City Rail Terminal','Atlantic City','NJ');
 /*!40000 ALTER TABLE `stations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -348,7 +348,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES ('guest','guestpassword',NULL,NULL);
+INSERT INTO `users` VALUES ('guest','guestpassword',NULL,NULL),('johndoe','pass','John','Doe');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -361,4 +361,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-11-25 22:09:04
+-- Dump completed on 2024-11-26 18:25:49
