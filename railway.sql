@@ -25,7 +25,7 @@ DROP TABLE IF EXISTS `admin`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `admin` (
-  `username` varchar(10) NOT NULL,
+  `username` varchar(20) NOT NULL,
   `ssn` varchar(11) NOT NULL,
   PRIMARY KEY (`username`),
   CONSTRAINT `admin_ibfk_1` FOREIGN KEY (`username`) REFERENCES `users` (`username`)
@@ -49,7 +49,7 @@ DROP TABLE IF EXISTS `customer_representatives`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `customer_representatives` (
-  `username` varchar(10) NOT NULL,
+  `username` varchar(20) NOT NULL,
   `ssn` varchar(11) NOT NULL,
   PRIMARY KEY (`username`),
   CONSTRAINT `customer_representatives_ibfk_1` FOREIGN KEY (`username`) REFERENCES `users` (`username`)
@@ -73,10 +73,10 @@ DROP TABLE IF EXISTS `customers`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `customers` (
-  `username` varchar(10) NOT NULL,
-  `email` varchar(11) NOT NULL,
+  `username` varchar(20) NOT NULL,
+  `email` varchar(50) NOT NULL,
   PRIMARY KEY (`username`),
-  CONSTRAINT `customers_ibfk_1` FOREIGN KEY (`username`) REFERENCES `users` (`username`)
+  CONSTRAINT `customers_ibfk_1` FOREIGN KEY (`username`) REFERENCES `users` (`username`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -86,6 +86,7 @@ CREATE TABLE `customers` (
 
 LOCK TABLES `customers` WRITE;
 /*!40000 ALTER TABLE `customers` DISABLE KEYS */;
+INSERT INTO `customers` VALUES ('johndoe','johndoe@gmail.com');
 /*!40000 ALTER TABLE `customers` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -97,9 +98,9 @@ DROP TABLE IF EXISTS `has_destination`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `has_destination` (
-  `username` varchar(10) NOT NULL,
+  `username` varchar(20) NOT NULL,
   `res_number` int NOT NULL,
-  `transit_line_name` varchar(30) DEFAULT NULL,
+  `transit_line_name` varchar(50) DEFAULT NULL,
   `station_id` int DEFAULT NULL,
   PRIMARY KEY (`username`,`res_number`),
   KEY `transit_line_name` (`transit_line_name`,`station_id`),
@@ -125,9 +126,9 @@ DROP TABLE IF EXISTS `has_origin`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `has_origin` (
-  `username` varchar(10) NOT NULL,
+  `username` varchar(20) NOT NULL,
   `res_number` int NOT NULL,
-  `transit_line_name` varchar(30) DEFAULT NULL,
+  `transit_line_name` varchar(50) DEFAULT NULL,
   `station_id` int DEFAULT NULL,
   PRIMARY KEY (`username`,`res_number`),
   KEY `transit_line_name` (`transit_line_name`,`station_id`),
@@ -153,9 +154,9 @@ DROP TABLE IF EXISTS `has_transit`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `has_transit` (
-  `username` varchar(10) NOT NULL,
+  `username` varchar(20) NOT NULL,
   `res_number` int NOT NULL,
-  `transit_line_name` varchar(30) DEFAULT NULL,
+  `transit_line_name` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`username`,`res_number`),
   CONSTRAINT `has_transit_ibfk_1` FOREIGN KEY (`username`, `res_number`) REFERENCES `reservations` (`username`, `res_number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -178,7 +179,7 @@ DROP TABLE IF EXISTS `reservation_portfolio`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `reservation_portfolio` (
-  `username` varchar(10) NOT NULL,
+  `username` varchar(20) NOT NULL,
   PRIMARY KEY (`username`),
   CONSTRAINT `reservation_portfolio_ibfk_1` FOREIGN KEY (`username`) REFERENCES `users` (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -201,7 +202,7 @@ DROP TABLE IF EXISTS `reservations`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `reservations` (
-  `username` varchar(10) NOT NULL,
+  `username` varchar(20) NOT NULL,
   `res_number` int NOT NULL,
   `total_fare` float DEFAULT NULL,
   `date` date DEFAULT NULL,
@@ -228,8 +229,8 @@ DROP TABLE IF EXISTS `stations`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `stations` (
   `station_id` int NOT NULL,
-  `station_name` varchar(20) DEFAULT NULL,
-  `city` varchar(20) DEFAULT NULL,
+  `station_name` varchar(50) DEFAULT NULL,
+  `city` varchar(30) DEFAULT NULL,
   `state_abb` char(2) DEFAULT NULL,
   PRIMARY KEY (`station_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -252,7 +253,7 @@ DROP TABLE IF EXISTS `stops`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `stops` (
-  `transit_line_name` varchar(30) NOT NULL,
+  `transit_line_name` varchar(50) NOT NULL,
   `station_id` int NOT NULL,
   `stop_arrival` datetime DEFAULT NULL,
   `stop_departure` datetime DEFAULT NULL,
@@ -302,10 +303,10 @@ DROP TABLE IF EXISTS `transit_lines_have`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `transit_lines_have` (
-  `transit_line_name` varchar(30) NOT NULL,
+  `transit_line_name` varchar(50) NOT NULL,
   `train_id` int DEFAULT NULL,
-  `origin` varchar(20) DEFAULT NULL,
-  `destination` varchar(20) DEFAULT NULL,
+  `origin` varchar(50) DEFAULT NULL,
+  `destination` varchar(50) DEFAULT NULL,
   `arrival` datetime DEFAULT NULL,
   `departure` datetime DEFAULT NULL,
   `fare` float DEFAULT NULL,
@@ -333,7 +334,7 @@ DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `users` (
-  `username` varchar(10) NOT NULL,
+  `username` varchar(20) NOT NULL,
   `password` varchar(20) NOT NULL,
   `f_name` varchar(20) DEFAULT NULL,
   `l_name` varchar(20) DEFAULT NULL,
@@ -347,7 +348,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES ('guest','guestpassword',NULL,NULL);
+INSERT INTO `users` VALUES ('guest','guestpassword',NULL,NULL),('johndoe','pass','John','Doe');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -360,4 +361,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-11-14 17:29:34
+-- Dump completed on 2024-11-26 18:25:49
