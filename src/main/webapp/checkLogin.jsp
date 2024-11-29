@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ page import="java.sql.*" %>
+<%@ page import="java.io.*,java.util.*,java.sql.*"%>
 <%@ page import="javax.servlet.http.HttpSession" %>
+<%@ page import="com.cs336.pkg.ApplicationDB" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,20 +12,23 @@
 <body>
 
 <%
-    String jdbcUrl = "jdbc:mysql://localhost:3306/cs336project";
-    String dbUser = "root";  // Your DB username
-    String dbPassword = "2024fall336project";  // Your DB password
+    //String jdbcUrl = "jdbc:mysql://localhost:3306/cs336project";
+    //String dbUser = "root";  // Your DB username
+    //String dbPassword = "root1234";  // Your DB password
     String username = request.getParameter("username");
     String password = request.getParameter("password");
-
+	
     Connection conn = null;
     PreparedStatement ps = null;
     ResultSet rs = null;
 
     try {
-        Class.forName("com.mysql.cj.jdbc.Driver");
+        // Class.forName("com.mysql.cj.jdbc.Driver");
 
-        conn = DriverManager.getConnection(jdbcUrl, dbUser, dbPassword);
+        //conn = DriverManager.getConnection(jdbcUrl, dbUser, dbPassword);
+        // Establish connection
+    	ApplicationDB db = new ApplicationDB();	
+        conn = db.getConnection(); 
 
         String sql = "SELECT * FROM users WHERE username = ? AND password = ?";
         ps = conn.prepareStatement(sql);

@@ -3,6 +3,7 @@ package com.cs336.pkg;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class ApplicationDB {
 	
@@ -31,7 +32,9 @@ public class ApplicationDB {
 		}
 		try {
 			//Create a connection to your DB
-			connection = DriverManager.getConnection(connectionUrl,"root", "2024fall336project");
+			connection = DriverManager.getConnection(connectionUrl,"root", "root1234");
+			Statement stmt = connection.createStatement();
+			stmt.execute("USE cs336project");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
