@@ -1,5 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.sql.*" %>
+<%@ page import="com.cs336.pkg.ApplicationDB" %>
+
 <%
     
     String firstName = request.getParameter("f_name");
@@ -8,9 +10,9 @@
     String username = request.getParameter("username");
     String password = request.getParameter("password");
 
-    String jdbcURL = "jdbc:mysql://localhost:3306/cs336project";
+   /*  String jdbcURL = "jdbc:mysql://localhost:3306/cs336project";
     String dbUsername = "root"; 
-    String dbPassword = "2024fall336project";
+    String dbPassword = "2024fall336project"; */
 
     String insertUserSQL = "INSERT INTO users (username, f_name, l_name, password) VALUES (?, ?, ?, ?)";
     String insertCustomerSQL = "INSERT INTO customers (username, email) VALUES (?, ?)";
@@ -20,7 +22,9 @@
     PreparedStatement pstCustomer = null;
     
     try {
-        conn = DriverManager.getConnection(jdbcURL, dbUsername, dbPassword);
+        // conn = DriverManager.getConnection(jdbcURL, dbUsername, dbPassword);
+        ApplicationDB db = new ApplicationDB();
+        conn = db.getConnection();
         
         pstUser = conn.prepareStatement(insertUserSQL);
         pstUser.setString(1, username);
