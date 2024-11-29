@@ -79,6 +79,12 @@
             psCustomer.close();
         } else {
             out.println("Invalid username or password.");
+            %>
+            <br>
+            <h3>
+				<a href="login.jsp">Back to Login</a>
+			</h3>
+            <%
         }
     } catch (Exception e) {
         e.printStackTrace();
