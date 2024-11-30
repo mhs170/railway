@@ -81,7 +81,7 @@
             out.println("Invalid username or password.");
             %>
             <br>
-            <h3>
+            <h3 class="back-to-login">
 				<a href="login.jsp">Back to Login</a>
 			</h3>
             <%
