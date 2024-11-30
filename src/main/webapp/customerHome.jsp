@@ -33,7 +33,8 @@
 <div>
 	<h2 >Search for Train Schedules</h2>
 	
-	<form method="post" action="searchSchedule.jsp">
+	<form method="post" action="searchSchedule.jsp" onsubmit="return validateForm(event)">
+		<!-- Input information -->
 		<div class="schedule-form-container">
 	    	<span>
 	      		<label for="originStation" > Origin Station</label>
@@ -52,9 +53,48 @@
 	      		<input id="depTime" type='text' name="depTime" placeholder="HH:MM:SS"/>
 	    	</span>
 	  	</div>
+	  	
+        <!-- Sorting Options -->
+	  	<div>
+            <span>
+                <label for="sortBy">Sort By</label>
+                <select name="sortBy" id="sortBy">
+                    <option value="transit_line_name">Transit Line Name</option>
+                    <option value="train_id">Train ID</option>
+                    <option value="origin">Origin</option>
+                    <option value="destination">Destination</option>
+                    <option value="arrival">Arrival Time</option>
+                    <option value="departure">Departure Time</option>
+                    <option value="fare">Fare</option>
+                    <option value="num_stops">Number of Stops</option>
+                </select>
+            </span>
+            <span>
+                <label for="sortOrder">Order</label>
+                <select name="sortOrder" id="sortOrder">
+                    <option value="ASC">Ascending</option>
+                    <option value="DESC">Descending</option>
+                </select>
+            </span>
+        </div>
 	  	<button type="submit" name="action" value="search"> Search</button>
 	  	<button type="submit" name="action" value="viewAll"> View All Schedules</button>
 	</form>
+	<script>
+    function validateForm(event) {
+        const action = event.submitter.value; // Get which button was clicked
+        if (action === "search") {
+            const origin = document.getElementById("originStation").value.trim();
+            const destination = document.getElementById("destinationStation").value.trim();
+            if (!origin || !destination) {
+                alert("Origin and Destination are required for searching schedules.");
+                return false; // Prevent form submission
+            }
+        }
+        // No validation required for "View All"
+        return true;
+    }
+</script>
 </div>
 
 <!-- view all stops of a specific transit line -->
@@ -81,17 +121,22 @@
             <!-- Sorting Options -->
             <label for="sortBy">Sort By:</label>
             <select name="sortBy" id="sortBy" required>
-                <option value="arrival">Arrival Time</option>
-                <option value="departure">Departure Time</option>
-                <option value="fare">Fare</option>
+            <!-- TODO: value should be the actual attribute name in the table?? -->
+                <option value="arrivalASC">Arrival Time (ascending order)</option>
+                <option value="arrivalDESC">Arrival Time (descending order)</option>
+                <option value="departureASC">Departure Time (ascending order)</option>
+                <option value="departureDESC">Departure Time (descending order)</option>
             </select>
         </div>
         <!-- Submit Button -->
         <button type="submit">View Stops</button>
     </form>
+    
 	
 </div>	
 
+<!-- TODO: Create, view, and cancel reservations -->
+<!-- TODO: browse, search for, and ask questions -->
 
 <%
     } else { 

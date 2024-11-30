@@ -1,5 +1,5 @@
-<!-- createAccount.jsp -->
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -52,16 +52,17 @@
 <body>
     <div class="container">
         <p>Please enter your account credentials:</p>
-        <form action="registerAccount.jsp" method="post">
+        <!-- TODO: create registerCustomerRepresentative.jsp  -->
+        <form action="registerCustomerRepresentative.jsp" method="post">
             <label for="f_name">First Name:</label>
             <input type="text" name="f_name" id="f_name" required>
             
             <label for="l_name">Last Name:</label>
             <input type="text" name="l_name" id="l_name" required>
             
-            <label for="email">Email:</label>
-            <input type="email" name="email" id="email" required>
-            
+            <label for="ssn">SSN:</label>
+			<input type="text" name="ssn" id="ssn" placeholder="XXX-XX-XXXX" required>
+			
             <label for="username">Username:</label>
             <input type="text" name="username" id="username" required>
             
@@ -71,9 +72,11 @@
             <button type="submit">Create Account</button>
             
         </form>
-        <form action="login.jsp">
-            <button type="submit">Back to Login</button>
+        <form action="adminHome.jsp">
+            <button type="submit">Back to Home</button>
         </form>
     </div>
 </body>
 </html>
+
+

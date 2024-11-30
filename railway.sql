@@ -50,7 +50,7 @@ DROP TABLE IF EXISTS `customer_representatives`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `customer_representatives` (
   `username` varchar(20) NOT NULL,
-  `ssn` varchar(11) NOT NULL,
+  `ssn` varchar(11) NOT NULL UNIQUE,
   PRIMARY KEY (`username`),
   CONSTRAINT `customer_representatives_ibfk_1` FOREIGN KEY (`username`) REFERENCES `users` (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

@@ -51,12 +51,18 @@
 			ApplicationDB db = new ApplicationDB();
 			conn = db.getConnection();
 			
+			//Grab origin, destination, dep date and time
+			String originStation = (String) request.getParameter("originStation");
+			String destinationStation = (String) request.getParameter("destinationStation");
+			String sortBy = (String) request.getParameter("sortBy"); 				
+			String sortOrder = (String) request.getParameter("sortOrder");
+			String depDate = (String) request.getParameter("depDate");
+			String depTime = (String) request.getParameter("depTime");
+			// out.println(depTime);
+			out.println(sortBy);
+			
 			if(action.equals("search")){
 				//user pressed search
-				
-				//Grab origin, destination, dep date and time
-				String originStation = (String) request.getParameter("originStation");
-				String destinationStation = (String) request.getParameter("destinationStation");
 				
 				//if origin or dest are null, throw error
 				if (originStation == null || originStation.trim().isEmpty() ||
@@ -82,40 +88,39 @@
             	}
 				
 				
-				String depDate = (String) request.getParameter("depDate");
-				String depTime = (String) request.getParameter("depTime");
-				// out.println(depTime);
-				
 				//create query
 				String query = "";
 				if(!depDate.equals("") && !depTime.equals("")){
 					//user entered both date and time
-					query = "SELECT * FROM transit_lines_have WHERE origin = ? AND destination = ? AND departure = ?";
+					query = "SELECT * FROM transit_lines_have WHERE origin = ? AND destination = ? AND departure = ? ORDER BY " + sortBy + " " + sortOrder;
 					ps = conn.prepareStatement(query);
 				    ps.setString(1, originStation);
 				    ps.setString(2, destinationStation);
 				    ps.setString(3, depDate + depTime);
 				}else if(!depDate.equals("")){
 					//user entered only date
-					query = "SELECT * FROM transit_lines_have WHERE origin = ? AND destination = ? AND DATE(departure) = ?";
+					query = "SELECT * FROM transit_lines_have WHERE origin = ? AND destination = ? AND DATE(departure) = ? ORDER BY " + sortBy + " " + sortOrder;
 					ps = conn.prepareStatement(query);
 				    ps.setString(1, originStation);
 				    ps.setString(2, destinationStation);
 				    ps.setString(3, depDate);
 				}else{
 					//user entered none 
-					query = "SELECT * FROM transit_lines_have WHERE origin = ? AND destination = ?";
+					query = "SELECT * FROM transit_lines_have WHERE origin = ? AND destination = ? ORDER BY " + sortBy + " " + sortOrder;
 					ps = conn.prepareStatement(query);
 				    ps.setString(1, originStation);
 				    ps.setString(2, destinationStation);
 				}
+			
+			
 				
 			}else if(action.equals("viewAll")){
 				//user pressed View All
 				
-				String query = "SELECT * FROM transit_lines_have";
+				String query = "SELECT * FROM transit_lines_have ORDER BY " + sortBy + " " + sortOrder;
 				ps = conn.prepareStatement(query);
 			}
+			
 			
 			
 			//print query for debugging
@@ -139,8 +144,9 @@
 						<th>Destination</th>
 						<th>Arrival Time</th>
 						<th>Departure Time</th>
-						<th>Fare</th>
+						<th>Fixed Fare</th>
 						<th>Number of Stops</th>
+						<th>Fare Per Stop</th>
 					</tr>
 				<%
 			        // Loop through all the rows in the result set
@@ -153,8 +159,9 @@
 						<td><%= rs.getString("destination") %></td>
 						<td><%= rs.getString("arrival") %></td>
 						<td><%= rs.getString("departure") %></td>
-						<td><%= rs.getDouble("fare") %></td>
+						<td>$<%= rs.getDouble("fare") %></td>
 						<td><%= rs.getInt("num_stops") %></td>
+						<td>$<%= rs.getDouble("fare") / rs.getInt("num_stops") %></td>
 					</tr>
 				<%
 			      	} while(rs.next());

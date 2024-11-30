@@ -39,7 +39,7 @@
 <% 
     String username = (String) session.getAttribute("username");
     if (username != null) {
-		//Grab origin, destination, dep date and time
+		//Grab transit name and sortBy
 		String transitName = (String) request.getParameter("transitLine");
 		String sortBy = (String) request.getParameter("sortBy");
 		
@@ -52,12 +52,24 @@
 			ApplicationDB db = new ApplicationDB();
 			conn = db.getConnection();				
 			
-			//create query
-			//TODO fix database. need to make all the tables, with foreign keys 
+			//create query 
 			String query = "SELECT * FROM stops WHERE transit_line_name = ? ORDER BY ?";
 			ps = conn.prepareStatement(query);
 			ps.setString(1, transitName);
-			ps.setString(2, sortBy);
+			
+			if(sortBy.equals("arrivalASC")){
+				ps.setString(2, "stop_arrival ASC");
+				
+			}else if(sortBy.equals("arrivalDESC")){
+				ps.setString(2, "stop_arrival DESC");
+				
+			}else if(sortBy.equals("departureASC")){
+				ps.setString(2, "stop_departure ASC");
+				
+			}else if(sortBy.equals("departureDESC")){
+				ps.setString(2, "stop_departure DESC");
+				
+			}
 			
 			//print query for debugging
 		    out.println("<b>[DEBUG] ps.toString():</b> "+ ps.toString());
@@ -71,28 +83,28 @@
 				%>
 				<!-- Display Results in a Table -->
 				
-				<h2> <%out.println(transitName);%> Stops</h2>
-				<table border="1" cellpadding="10">
-					<tr>
-						<th>Transit Line Name</th>
-						<th>Station ID</th>
-						<th>Stop Arrival</th>
-						<th>Stop Departure</th>
-					</tr>
-				<%
-			        // Loop through all the rows in the result set
-			    	do{
-			    %>
-					<tr>
-						<td><%= rs.getString("transit_line_name") %></td>
-						<td><%= rs.getString("station_id") %></td>
-						<td><%= rs.getString("stop_arrival") %></td>
-						<td><%= rs.getString("stop_departure") %></td>
-					</tr>
-				<%
-			      	} while(rs.next());
-			    %>
-				</table>
+					<h2> <%out.println(transitName);%> Stops</h2>
+					<table border="1" cellpadding="10">
+						<tr>
+							<th>Transit Line Name</th>
+							<th>Station ID</th>
+							<th>Stop Arrival</th>
+							<th>Stop Departure</th>
+						</tr>
+					<%
+				        // Loop through all the rows in the result set
+				    	do{
+				    %>
+						<tr>
+							<td><%= rs.getString("transit_line_name") %></td>
+							<td><%= rs.getString("station_id") %></td>
+							<td><%= rs.getString("stop_arrival") %></td>
+							<td><%= rs.getString("stop_departure") %></td>
+						</tr>
+					<%
+				      	} while(rs.next());
+				    %>
+					</table>
 				
 				<%
 				}else{
