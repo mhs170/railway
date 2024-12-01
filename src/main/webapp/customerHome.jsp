@@ -81,20 +81,20 @@
 	  	<button type="submit" name="action" value="viewAll"> View All Schedules</button>
 	</form>
 	<script>
-    function validateForm(event) {
-        const action = event.submitter.value; // Get which button was clicked
-        if (action === "search") {
-            const origin = document.getElementById("originStation").value.trim();
-            const destination = document.getElementById("destinationStation").value.trim();
-            if (!origin || !destination) {
-                alert("Origin and Destination are required for searching schedules.");
-                return false; // Prevent form submission
-            }
-        }
-        // No validation required for "View All"
-        return true;
-    }
-</script>
+	    function validateForm(event) {
+	        const action = event.submitter.value; // Get which button was clicked
+	        if (action === "search") {
+	            const origin = document.getElementById("originStation").value.trim();
+	            const destination = document.getElementById("destinationStation").value.trim();
+	            if (!origin || !destination) {
+	                alert("Origin and Destination are required for searching schedules.");
+	                return false; // Prevent form submission
+	            }
+	        }
+	        // No validation required for "View All"
+	        return true;
+	    }
+	</script>
 </div>
 
 <!-- view all stops of a specific transit line -->

@@ -27,25 +27,40 @@
     <div>
     	<h2>Manage Customer Representatives</h2>
     	
-    	<h3>Search For representative</h3>
+    	<h3>Search For Representative</h3>
     	<!-- search for reps. redirect to a table showing results with "Edit" and "Delete" options-->
 
-    	<form method="post" action="searchCustomerReps.jsp">
+    	<form method="post" action="searchCustomerReps.jsp" onsubmit="return validateForm(event)">
 			<!-- Input information -->
 			<div>
 		    	<span>
 		      		<label for="username">Username</label>
-		      		<input id="username" type='text' name="username" placeholder="Enter Username"/>
+		      		<input id="custRepUsername" type='text' name="custRepUsername" placeholder="Enter Username"/>
 		    	</span>
 		    	<span>
 		      		<label for="ssn"> SSN</label>
-		      		<input id="ssn" type='text' name="ssn" placeholder="Enter SSN"/>
+		      		<input id="custRepSsn" type='text' name="custRepSsn" placeholder="Enter SSN"/>
 		    	</span>
 		  	</div>
 		  	
 		  	<button type="submit" name="action" value="search"> Search</button>
-		  	<button type="submit" name="action" value="viewAll"> View All Representatives</button>
+		  	<button type="submit" name="action" value="viewAll"> View All Representatives</button> <!-- sort option ? -->
 		</form>
+		
+		<script>
+			function validateForm(event) {
+		        const action = event.submitter.value; // Get which button was clicked
+		        if (action === "search") {
+		            const username = document.getElementById("custRepUsername").value.trim();
+		            const ssn = document.getElementById("custRepSsn").value.trim();
+		            if (!username && !ssn) {
+		                alert("Username or SSN are required for searching Customer Representatives.");
+		                return false; // Prevent form submission
+		            }
+		        }
+		        // No validation required for "View All"
+			}
+		</script>
 		
 		
     	<hr>
