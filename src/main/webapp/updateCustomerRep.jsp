@@ -58,6 +58,9 @@
 	        	<input type="hidden" name="custRepSsn" value="<%= custRepSsn %>">
 				<button>Back to Search</button>
 	        </form>
+	        <form action="adminHome.jsp">
+				<button>Back to Home</button>
+	        </form>
     		<%
     	}else{
     		%>

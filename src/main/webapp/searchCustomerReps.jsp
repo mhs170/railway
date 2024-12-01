@@ -138,7 +138,9 @@
 					out.println("<h3>No customer representatives found.</h3>");
 				}
 			%>
-					<a href="adminHome.jsp">Back To Home</a>
+					<form action="adminHome.jsp">
+						<button>Back to Home</button>
+	        		</form>
 			<%	
 				
 				
