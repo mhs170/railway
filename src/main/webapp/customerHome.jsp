@@ -15,8 +15,41 @@
 </head>
 <body>
 	<% 
-    String username = (String) session.getAttribute("username");
+	String username = (String) session.getAttribute("username");
     if (username != null) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        List<String> stops = new ArrayList<String>();
+        List<String> times = new ArrayList<String>();
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            String jdbcUrl = "jdbc:mysql://localhost:3306/cs336project"; 
+            String dbUser = "root";  
+            String dbPassword = "2024fall336project";
+            conn = DriverManager.getConnection(jdbcUrl, dbUser, dbPassword);
+            
+            stmt = conn.prepareStatement("SELECT DISTINCT station_name FROM stations ORDER BY station_name");
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                stops.add(rs.getString("station_name"));
+            }
+            rs.close();
+            stmt.close();
+            
+            
+            stmt = conn.prepareStatement("SELECT DISTINCT departure FROM transit_lines_have ORDER BY departure");
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                times.add(rs.getString("departure"));
+            }
+        } catch (Exception e) {
+            out.println("<p>Error: " + e.getMessage() + "</p>");
+        } finally {
+            if (rs != null) rs.close();
+            if (stmt != null) stmt.close();
+            if (conn != null) conn.close();
+        }
 %>
     <h1 class="title">
 		Train Reservation System
@@ -136,6 +169,59 @@
 </div>	
 
 <!-- TODO: Create, view, and cancel reservations -->
+<div>
+    <h2>Create a Reservation</h2>
+    <form method="post" action="createReservation.jsp">
+        <div class="schedule-form-container">
+            
+            <span>
+                <label for="tripType">Trip Type</label>
+                <select id="tripType" name="tripType" required>
+                    <option value="" disabled selected>Select Trip Type</option>
+                    <option value="oneWay">One Way</option>
+                    <option value="roundTrip">Round Trip</option>
+                </select>
+            </span>
+            
+            <span>
+                <label for="originStop">Origin Stop</label>
+                <select id="originStop" name="originStop" required>
+                    <option value="" disabled selected>Select Origin</option>
+                    <% for (String stop : stops) { %>
+                        <option value="<%= stop %>"><%= stop %></option>
+                    <% } %>
+                </select>
+            </span>
+            
+            <span>
+                <label for="destinationStop">Destination Stop</label>
+                <select id="destinationStop" name="destinationStop" required>
+                    <option value="" disabled selected>Select Destination</option>
+                    <% for (String stop : stops) { %>
+                        <option value="<%= stop %>"><%= stop %></option>
+                    <% } %>
+                </select>
+            </span>
+           
+            <span>
+                <label for="depDate">Departure Date</label>
+                <input id="depDate" type="date" name="depDate" required>
+            </span>
+            
+            <span>
+                <label for="depTime">Departure Time</label>
+                <select id="depTime" name="depTime" required>
+                    <option value="" disabled selected>Select Time</option>
+                    <% for (String time : times) { %>
+                        <option value="<%= time %>"><%= time %></option>
+                    <% } %>
+                </select>
+            </span>
+        </div>
+        <button type="submit">Create Reservation</button>
+    </form>
+</div>
+
 <!-- TODO: browse, search for, and ask questions -->
 
 <%
