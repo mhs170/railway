@@ -71,6 +71,26 @@
     	</form>
     	
     </div>
+    	<h2>Obtain Sales Report</h2>
+    <!-- obtain sales report:
+    - input a month and year (date)
+    - redirect to getSalesReport.jsp
+    - sum all the "total_fare" of every reservation that with that date 
+    -->
+    
+	    <form method="post" action="getSalesReport.jsp">
+			<!-- Input information -->
+	    	<span>
+	      		<label for="month">Month & Year:</label>
+	      		<input id="month" type='month' name="date" required/>
+	    	</span>
+		  	<button type="submit"> Get Sales Report</button>
+		</form>
+    <div>
+    
+    
+    
+    </div>
     
 <% 
     } else { 

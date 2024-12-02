@@ -77,7 +77,7 @@
 	    	</span>
 	    	<span>
 	      		<label for="dateOfTravel" >Date Of Travel</label>
-	      		<input id="dateOfTravel" type='text' name="dateOfTravel" placeholder="YYYY-MM-DD"/>
+	      		<input id="dateOfTravel" type='date' name="dateOfTravel" placeholder="YYYY-MM-DD"/>
 	    	</span>
 	    	<span>
 	      		<label for="timeOfTravel" >Time of Travel (not required)</label>
