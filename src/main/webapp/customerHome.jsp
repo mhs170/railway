@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" import="com.cs336.pkg.*"%>
 <%@ page import="java.io.*,java.util.*,java.sql.*"%>
 <%@ page import="javax.servlet.http.*,javax.servlet.*"%>
+<%@ page import="com.cs336.pkg.ApplicationDB"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,11 +24,8 @@
         List<String> stops = new ArrayList<String>();
         List<String> times = new ArrayList<String>();
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            String jdbcUrl = "jdbc:mysql://localhost:3306/cs336project"; 
-            String dbUser = "root";  
-            String dbPassword = "2024fall336project";
-            conn = DriverManager.getConnection(jdbcUrl, dbUser, dbPassword);
+        	ApplicationDB db = new ApplicationDB();
+        	conn = db.getConnection();
             
             stmt = conn.prepareStatement("SELECT DISTINCT station_name FROM stations ORDER BY station_name");
             rs = stmt.executeQuery();
@@ -78,12 +76,12 @@
 	      		<input id="destinationStation" type='text' name="destinationStation" placeholder="Enter Destination"/>
 	    	</span>
 	    	<span>
-	      		<label for="depDate" >Departure Date</label>
-	      		<input id="depDate" type='text' name="depDate" placeholder="YYYY-MM-DD"/>
+	      		<label for="dateOfTravel" >Date Of Travel</label>
+	      		<input id="dateOfTravel" type='text' name="dateOfTravel" placeholder="YYYY-MM-DD"/>
 	    	</span>
 	    	<span>
-	      		<label for="depTime" >Departure Time (not required)</label>
-	      		<input id="depTime" type='text' name="depTime" placeholder="HH:MM:SS"/>
+	      		<label for="timeOfTravel" >Time of Travel (not required)</label>
+	      		<input id="timeOfTravel" type='text' name="timeOfTravel" placeholder="HH:MM:SS"/>
 	    	</span>
 	  	</div>
 	  	
@@ -120,8 +118,15 @@
 	            const origin = document.getElementById("originStation").value.trim();
 	            const destination = document.getElementById("destinationStation").value.trim();
 	            if (!origin || !destination) {
-	                alert("Origin and Destination are required for searching schedules.");
+                	alert("Origin and Destination are required for searching schedules.");
 	                return false; // Prevent form submission
+	            }
+	            
+	            const date = document.getElementById("dateOfTravel").value.trim();
+	            const time = document.getElementById("timeOfTravel").value.trim();
+	            if (time && !date){
+	            	alert("Cannot provide time with no date.");
+               		return false; // Prevent form submission
 	            }
 	        }
 	        // No validation required for "View All"

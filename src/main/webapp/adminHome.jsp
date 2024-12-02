@@ -66,7 +66,7 @@
     	<hr>
     	
     	<!-- "create new customer representative button -->
-    	<form method="get" action="createCustomerRep.jsp">
+    	<form method="get" action="createCustomerRepAccount.jsp">
         	<button type="submit">Create New Customer Representative</button>
     	</form>
     	

@@ -4,6 +4,11 @@
 <html>
 <head>
     <title>Delete Customer Representative</title>
+    <script type="text/javascript">
+        setTimeout(function() {
+            window.location.href = "adminHome.jsp";
+        }, 5000);
+    </script>
 </head>
 <body>
     <%
@@ -32,7 +37,35 @@
 		            int rowsDeleted = ps.executeUpdate();
 		
 		            if (rowsDeleted > 0) {
-		                out.println("<h2>Customer representative deleted successfully.</h2>");
+				        %>
+				        <h2>Customer representative deleted successfully.</h2>
+				        
+				        <p>You will be redirected to the home page in <span id="countdown">5</span> seconds...</p>
+        	                
+			            <script type="text/javascript">
+			                var countdownElement = document.getElementById("countdown");
+			                var countdown = 5;
+			
+			                var countdownInterval = setInterval(function() {
+			                    countdown--;
+			                    countdownElement.innerText = countdown;
+			                    if (countdown <= 0) {
+			                        clearInterval(countdownInterval);
+			                    }
+			                }, 1000);
+			            </script>
+				        
+					    <form action="searchCustomerReps.jsp" method="post">
+				        	<input type="hidden" name="action" value="<%= action %>">
+				        	<input type="hidden" name="custRepUsername" value="<%= custRepUsername %>">
+				        	<input type="hidden" name="custRepSsn" value="<%= custRepSsn %>">
+							<button>Back to Search</button>
+				        </form>
+				        <form action="adminHome.jsp">
+							<button>Back to Home</button>
+				        </form>
+				        <% 
+				        
 		            } else {
 		                out.println("<h2>Error: Customer representative not found.</h2>");
 		            }
@@ -56,17 +89,6 @@
     	            
     	        }
     	    }
-	        %>
-		    <form action="searchCustomerReps.jsp" method="post">
-	        	<input type="hidden" name="action" value="<%= action %>">
-	        	<input type="hidden" name="custRepUsername" value="<%= custRepUsername %>">
-	        	<input type="hidden" name="custRepSsn" value="<%= custRepSsn %>">
-				<button>Back to Search</button>
-	        </form>
-	        <form action="adminHome.jsp">
-				<button>Back to Home</button>
-	        </form>
-	        <%
 	        
     	}else{
     		%>

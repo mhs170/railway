@@ -55,56 +55,32 @@
 			String destinationStation = (String) request.getParameter("destinationStation");
 			String sortBy = (String) request.getParameter("sortBy"); 				
 			String sortOrder = (String) request.getParameter("sortOrder");
-			String depDate = (String) request.getParameter("depDate");
-			String depTime = (String) request.getParameter("depTime");
+			String dateOfTravel = (String) request.getParameter("dateOfTravel");
+			String timeOfTravel = (String) request.getParameter("timeOfTravel");
 			// out.println(depTime);
 			out.println(sortBy);
 			
 			if(action.equals("search")){
 				//user pressed search
 				
-				//if origin or dest are null, throw error
-				if (originStation == null || originStation.trim().isEmpty() ||
-                destinationStation == null || destinationStation.trim().isEmpty()) {
-                	out.println("<h3>ERROR: Origin and Destination are required for searching schedules.</h3>");
-                			
-                	// close connection
-                	try {
-        	            if (conn != null) conn.close();
-        	        } catch (SQLException e) {
-        	            e.printStackTrace();
-        	            
-        	        }
-                	%>
-                	<div>
-	                	<h3 class="back-to-home">
-							<a href="customerHome.jsp">Back to Home</a>
-						</h3>	                	
-                	</div>
-                	<%
-                	
-					return;
-            	}
-				
-				
 				//create query
 				String query = "";
-				if(!depDate.equals("") && !depTime.equals("")){
+				if(!dateOfTravel.equals("") && !timeOfTravel.equals("")){
 					//user entered both date and time
-					query = "SELECT *, fare/num_stops fare_per_stop FROM transit_lines_have WHERE origin = ? AND destination = ? AND departure = ? ORDER BY " + sortBy + " " + sortOrder;
+					query = "SELECT *, fare/num_stops fare_per_stop FROM transit_lines_have WHERE origin = ? AND destination = ? AND ? BETWEEN arrival AND departure ORDER BY " + sortBy + " " + sortOrder;
 					ps = conn.prepareStatement(query);
 				    ps.setString(1, originStation);
 				    ps.setString(2, destinationStation);
-				    ps.setString(3, depDate + depTime);
-				}else if(!depDate.equals("")){
+				    ps.setString(3, dateOfTravel + " " + timeOfTravel);
+				}else if(!dateOfTravel.equals("")){
 					//user entered only date
-					query = "SELECT *, fare/num_stops fare_per_stop FROM transit_lines_have WHERE origin = ? AND destination = ? AND DATE(departure) = ? ORDER BY " + sortBy + " " + sortOrder;
+					query = "SELECT *, fare/num_stops fare_per_stop FROM transit_lines_have WHERE origin = ? AND destination = ? AND ? BETWEEN DATE(arrival) AND DATE(departure) ORDER BY " + sortBy + " " + sortOrder;
 					ps = conn.prepareStatement(query);
 				    ps.setString(1, originStation);
 				    ps.setString(2, destinationStation);
-				    ps.setString(3, depDate);
+				    ps.setString(3, dateOfTravel);
 				}else{
-					//user entered none 
+					//user entered none, or just time
 					query = "SELECT *, fare/num_stops fare_per_stop FROM transit_lines_have WHERE origin = ? AND destination = ? ORDER BY " + sortBy + " " + sortOrder;
 					ps = conn.prepareStatement(query);
 				    ps.setString(1, originStation);

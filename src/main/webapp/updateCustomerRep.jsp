@@ -4,6 +4,11 @@
 <html>
 <head>
     <title>Update Customer Representative</title>
+    <script type="text/javascript">
+        setTimeout(function() {
+            window.location.href = "adminHome.jsp";
+        }, 5000);
+    </script>
 </head>
 <body>
     <%
@@ -36,7 +41,35 @@
                 ps2.setString(3, custRepUsername);
                 ps2.executeUpdate();
 
-                out.println("<h2>Customer representative updated successfully.</h2>");
+            %>
+    		<h1>Customer representative updated successfully.</h1>
+    		<p>You will be redirected to the home page in <span id="countdown">5</span> seconds...</p>
+        	                
+            <script type="text/javascript">
+                var countdownElement = document.getElementById("countdown");
+                var countdown = 5;
+
+                var countdownInterval = setInterval(function() {
+                    countdown--;
+                    countdownElement.innerText = countdown;
+                    if (countdown <= 0) {
+                        clearInterval(countdownInterval);
+                    }
+                }, 1000);
+            </script>
+            
+    		<form action="searchCustomerReps.jsp" method="post">
+	        	<input type="hidden" name="action" value="<%= request.getParameter("action") %>">
+	        	<input type="hidden" name="custRepUsername" value="<%= custRepUsername %>">
+	        	<input type="hidden" name="custRepSsn" value="<%= custRepSsn %>">
+				<button>Back to Search</button>
+	        </form>
+	        
+	        <form action="adminHome.jsp">
+				<button>Back to Home</button>
+	        </form>
+    		<%
+    		
             }catch (Exception e) {
     	    	out.println("ERROR: Could not connect to the database");
     			out.println(e);
@@ -50,18 +83,6 @@
     	            
     	        }
     	    }
-            %>
-    		
-    		<form action="searchCustomerReps.jsp" method="post">
-	        	<input type="hidden" name="action" value="<%= request.getParameter("action") %>">
-	        	<input type="hidden" name="custRepUsername" value="<%= custRepUsername %>">
-	        	<input type="hidden" name="custRepSsn" value="<%= custRepSsn %>">
-				<button>Back to Search</button>
-	        </form>
-	        <form action="adminHome.jsp">
-				<button>Back to Home</button>
-	        </form>
-    		<%
     	}else{
     		%>
     		<div style="text-align: center;">
