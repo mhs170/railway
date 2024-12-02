@@ -78,7 +78,7 @@
                     <td><%= reservationDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")) %></td> <!-- Display date and time -->
                     <td>
                         <% if (reservationDateTime.isAfter(now)) { %> 
-                            <form method="post" action="cancelReservation.jsp" style="display: inline;">
+                            <form method="post" action="cancelReservation.jsp" style="display: inline;" onsubmit="return confirm('Are you sure you want to cancel this reservation?');">
                                 <input type="hidden" name="res_number" value="<%= resNumber %>">
                                 <button type="submit">Cancel</button>
                             </form>
