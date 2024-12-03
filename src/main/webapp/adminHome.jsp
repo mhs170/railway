@@ -63,14 +63,18 @@
 		</script>
 		
 		
-    	<hr>
+    	<br>
     	
     	<!-- "create new customer representative button -->
     	<form method="get" action="createCustomerRepAccount.jsp">
-        	<button type="submit">Create New Customer Representative</button>
+        	<button type="submit">Create New Customer Representative Account</button>
     	</form>
     	
     </div>
+    
+    <hr>
+    
+    <div>
     	<h2>Obtain Sales Report</h2>
     <!-- obtain sales report:
     - input a month and year (date)
@@ -81,17 +85,26 @@
 	    <form method="post" action="getSalesReport.jsp">
 			<!-- Input information -->
 	    	<span>
-	      		<label for="month">Month & Year:</label>
-	      		<input id="month" type='month' name="date" required/>
+	      		<label for="month">By Month & Year:</label>
+	      		<input id="month" type='month' name="month" required/>
 	    	</span>
-		  	<button type="submit"> Get Sales Report</button>
+		  	<button type="submit" name="action" value="month_year"> Get Sales Report</button>
 		</form>
-    <div>
-    
-    
-    
+		
+		<form method="post" action="getSalesReport.jsp">
+		  	<span>
+	      		<label for="year">By Year Only:</label>
+	      		<input id="year" type="number" name = "year" min="1900" max="2099" step="1" value="2024" required/>
+	    	</span>
+		  	<button type="submit" name="action" value="year"> Get Sales Report</button>
+		</form>
     </div>
     
+    <hr>
+    
+    <div>
+    
+    </div>
 <% 
     } else { 
 %>
