@@ -81,6 +81,7 @@
 				ps.setString(1, year);
 				try{
 					rs = ps.executeQuery();
+					double total =0;
 					
 					if(rs.next()){
 		                %>
@@ -88,13 +89,14 @@
 		                    <table>
 		                        <tr>
 		                            <th>Month</th>
-		                            <th>Total Revenue</th>
+		                            <th>Total Monthly Revenue</th>
 		                        </tr>
 		                        
 	                        <% 
 	            	        // Loop through all the rows in the result set
 		                        do{
 									double revenue = rs.getDouble("revenue");
+									total += revenue;
 	                        %>	
 		                        <tr>
 		                            <td><%= rs.getString("month") %></td>
@@ -103,6 +105,10 @@
 	                        <%	
 		                        }while(rs.next());
                         	%>
+	                        	<tr>
+		                            <td><b>Total Revenue for <%= year %>:</b></td>
+		                            <td><b>$<%= String.format("%.2f", total) %></b></td>
+		                        </tr>
 		                    </table>
 		                </div>
 		                <% 

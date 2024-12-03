@@ -23,10 +23,12 @@
         ResultSet rs = null;
         List<String> stops = new ArrayList<String>();
         List<String> times = new ArrayList<String>();
+        List<String> transitLineNames = new ArrayList<String>();
         try {
         	ApplicationDB db = new ApplicationDB();
         	conn = db.getConnection();
             
+        	// fill stops
             stmt = conn.prepareStatement("SELECT DISTINCT station_name FROM stations ORDER BY station_name");
             rs = stmt.executeQuery();
             while (rs.next()) {
@@ -35,12 +37,24 @@
             rs.close();
             stmt.close();
             
-            
+            //fill times
             stmt = conn.prepareStatement("SELECT DISTINCT departure FROM transit_lines_have ORDER BY departure");
             rs = stmt.executeQuery();
             while (rs.next()) {
                 times.add(rs.getString("departure"));
             }
+            rs.close();
+	        stmt.close();
+            
+            //fill transitLineNames
+            stmt = conn.prepareStatement("SELECT DISTINCT transit_line_name FROM transit_lines_have ORDER BY transit_line_name");
+	        rs = stmt.executeQuery();
+	        while (rs.next()) {
+	        	transitLineNames.add(rs.getString("transit_line_name"));
+	        }
+	        
+            
+            
         } catch (Exception e) {
             out.println("<p>Error: " + e.getMessage() + "</p>");
         } finally {
@@ -146,27 +160,23 @@
 	 -->
 	 <form method="post" action="searchStopsByTransit.jsp">
         <div>
-            <!-- Dropdown for Transit Lines -->
-            <label for="transitLine">Choose a Transit Line:</label>
-            <select name="transitLine" id="transitLine" required>
-                <option value="" disabled selected>Select a Transit Line</option>
-                <option value="test">Test Line</option>
-                <option value="NJTransit">NJ Transit</option>
-                <option value="randomLine">Random Line</option>
-            </select>
+            <label for="transitLine">By Transit Line: </label>
+          	<select id="transitLine" name="transitLine" required>
+                 <option value="" disabled selected>Select Transit Line</option>
+                 <% for (String name : transitLineNames) { %>
+                     <option value="<%= name %>"><%= name %></option>
+                 <% } %>
+           	</select>
         </div>
         <div>
-            <!-- Sorting Options -->
             <label for="sortBy">Sort By:</label>
             <select name="sortBy" id="sortBy" required>
-            <!-- TODO: value should be the actual attribute name in the table?? -->
                 <option value="arrivalASC">Arrival Time (ascending order)</option>
                 <option value="arrivalDESC">Arrival Time (descending order)</option>
                 <option value="departureASC">Departure Time (ascending order)</option>
                 <option value="departureDESC">Departure Time (descending order)</option>
             </select>
         </div>
-        <!-- Submit Button -->
         <button type="submit">View Stops</button>
     </form>
     
