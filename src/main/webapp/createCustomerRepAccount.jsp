@@ -51,7 +51,7 @@
 </head>
 <body>
     <div class="container">
-        <p>Please enter your account credentials:</p>
+        <p>Please enter the account credentials:</p>
         <!-- TODO: create registerCustomerRepresentative.jsp  -->
         <form action="registerCustomerRepresentative.jsp" method="post">
             <label for="f_name">First Name:</label>
