@@ -12,7 +12,47 @@
 <% 
     String username = (String) session.getAttribute("username");
     if (username != null) {
-%>
+    	
+	    Connection conn = null;
+	    PreparedStatement stmt = null;
+	    ResultSet rs = null;
+	    List<String> transitLineNames = new ArrayList<String>();
+	    List<List<String>> customers = new ArrayList<List<String>>();
+	    	// basically stores 2-tuples, a (username, real-name) pair, where real name is "l_name, f_name"
+	    try {
+	    	ApplicationDB db = new ApplicationDB();
+	    	conn = db.getConnection();
+	        
+	        stmt = conn.prepareStatement("SELECT DISTINCT transit_line_name FROM transit_lines_have ORDER BY transit_line_name");
+	        rs = stmt.executeQuery();
+	        while (rs.next()) {
+	        	transitLineNames.add(rs.getString("transit_line_name"));
+	        }
+	        rs.close();
+	        stmt.close();
+	        
+	        
+	        stmt = conn.prepareStatement("SELECT username, l_name, f_name FROM users JOIN customers using(username) ORDER BY l_name");
+	        rs = stmt.executeQuery();
+	        while (rs.next()) {
+	        	//create a (username, real-name) pair
+	        	//add that to the array list.
+	        	//having the username helps with the db lookups in getRevenuePerCustomer.jsp
+	        	ArrayList<String> pair1 = new ArrayList<String>();
+	            pair1.add(rs.getString("username"));
+	            pair1.add(rs.getString("l_name") + ", " + rs.getString("f_name"));
+	            customers.add(pair1);
+	            
+	        }
+	    } catch (Exception e) {
+	        out.println("<p>Error: " + e.getMessage() + "</p>");
+	    } finally {
+	        if (rs != null) rs.close();
+	        if (stmt != null) stmt.close();
+	        if (conn != null) conn.close();
+	    }
+    %>
+
     <div style="text-align: center;">
     	<h1>Admin page</h1>
         <h1>Welcome, <%= username %>!</h1>
@@ -98,6 +138,62 @@
 	    	</span>
 		  	<button type="submit" name="action" value="year"> Get Sales Report</button>
 		</form>
+		
+		<!-- get listing of revenue: 
+		- by transit line
+			- get transit line name (query for it)
+			- join has_transit and reservations on res_number
+			- sum total_fare of all the reservations
+		-->
+		
+		<form method="post" action="getRevenuePerTransitLine.jsp">
+			<!-- Input information -->
+	    	<span>
+    	 		<label for="transit_line_name">By Transit Line: </label>
+               	<select id="transit_line_name" name="transit_line_name" required>
+                   <option value="" disabled selected>Select Transit Line</option>
+                   <% for (String name : transitLineNames) { %>
+                       <option value="<%= name %>"><%= name %></option>
+                   <% } %>
+               </select>
+	    	</span>
+	    	
+		  	<button type="submit" name="action" value="search"> Get Revenue</button>
+		</form>
+		
+		  	<!-- view all transit lines-->
+		<form method="post" action="getRevenuePerTransitLine.jsp">
+			<button type="submit" name="action" value="viewAll"> View Revenue for all Transit Lines</button>
+		</form>
+		
+		<!-- 
+		- by customer:
+			- get customer name (query for it up top to show in the list)
+			- join customers and reservations on username
+			- sum total_fare of all the reservations 
+		 -->
+		
+		<form method="post" action="getRevenuePerCustomer.jsp">
+			<!-- Input information -->
+	    	<span>
+	      		<label for="customer_name">By Customer: </label>
+               	<select id="customer_name" name="customer_username" required>
+                   <option value="" disabled selected>Select Customer</option>
+                   <% for (List<String> name : customers) { %>
+                       <option value="<%= name.get(0) %>"><%= name.get(1) %></option>
+                       <!-- pass username to getRevenuePerCustomer.jsp, but display real name -->
+                   <% } %>
+               </select>
+	    	</span>
+		  	<button type="submit" name="action" value="search"> Get Revenue</button>
+		</form>
+		
+		  	<!-- view all customers? -->
+		<form method="post" action="getRevenuePerCustomer.jsp">
+			<button type="submit" name="action" value="viewAll"> View Revenue for all Customers</button>
+		</form>
+		
+		
     </div>
     
     <hr>
