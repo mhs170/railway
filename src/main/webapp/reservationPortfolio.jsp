@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" import="java.sql.*, java.util.*, java.time.*, java.time.format.DateTimeFormatter" %>
+<%@ page import="com.cs336.pkg.ApplicationDB" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -40,12 +41,8 @@
                 ResultSet rs = null;
                 try {
                     
-                    Class.forName("com.mysql.cj.jdbc.Driver");
-                    String jdbcUrl = "jdbc:mysql://localhost:3306/cs336project";
-                    String dbUser = "root";
-                    String dbPassword = "2024fall336project";
-                    conn = DriverManager.getConnection(jdbcUrl, dbUser, dbPassword);
-
+                    ApplicationDB db = new ApplicationDB();
+                    conn = db.getConnection();
                
                     stmt = conn.prepareStatement("SELECT res_number, total_fare, date FROM reservations WHERE username = ? ORDER BY date DESC");
                     stmt.setString(1, username);

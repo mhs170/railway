@@ -175,56 +175,12 @@
 
 <!-- TODO: Create, view, and cancel reservations -->
 <div>
-    <h2>Create a Reservation</h2>
-    <form method="post" action="createReservation.jsp">
-        <div class="schedule-form-container">
-            
-            <span>
-                <label for="tripType">Trip Type</label>
-                <select id="tripType" name="tripType" required>
-                    <option value="" disabled selected>Select Trip Type</option>
-                    <option value="oneWay">One Way</option>
-                    <option value="roundTrip">Round Trip</option>
-                </select>
-            </span>
-            
-            <span>
-                <label for="originStop">Origin Stop</label>
-                <select id="originStop" name="originStop" required>
-                    <option value="" disabled selected>Select Origin</option>
-                    <% for (String stop : stops) { %>
-                        <option value="<%= stop %>"><%= stop %></option>
-                    <% } %>
-                </select>
-            </span>
-            
-            <span>
-                <label for="destinationStop">Destination Stop</label>
-                <select id="destinationStop" name="destinationStop" required>
-                    <option value="" disabled selected>Select Destination</option>
-                    <% for (String stop : stops) { %>
-                        <option value="<%= stop %>"><%= stop %></option>
-                    <% } %>
-                </select>
-            </span>
-           
-            <span>
-                <label for="depDate">Departure Date</label>
-                <input id="depDate" type="date" name="depDate" required>
-            </span>
-            
-            <span>
-                <label for="depTime">Departure Time</label>
-                <select id="depTime" name="depTime" required>
-                    <option value="" disabled selected>Select Time</option>
-                    <% for (String time : times) { %>
-                        <option value="<%= time %>"><%= time %></option>
-                    <% } %>
-                </select>
-            </span>
-        </div>
-        <button type="submit">Create Reservation</button>
-    </form>
+<div>
+				<h2>
+					Create Reservation
+				</h2>
+					To create a reservation, please click <a href="makeReservation.jsp">here</a>.
+			</div>
 </div>
 
 <!-- TODO: browse, search for, and ask questions -->

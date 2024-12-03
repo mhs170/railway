@@ -12,9 +12,10 @@
 <body>
 
 <%
-    //String jdbcUrl = "jdbc:mysql://localhost:3306/cs336project";
-    //String dbUser = "root";  // Your DB username
-    //String dbPassword = "root1234";  // Your DB password
+	Class.forName("com.mysql.cj.jdbc.Driver");
+	String jdbcUrl = "jdbc:mysql://localhost:3306/cs336project"; 
+	String dbUser = "root";  
+	String dbPassword = "2024fall336project";
     String username = request.getParameter("username");
     String password = request.getParameter("password");
 	
@@ -25,7 +26,7 @@
     try {
         // Class.forName("com.mysql.cj.jdbc.Driver");
 
-        //conn = DriverManager.getConnection(jdbcUrl, dbUser, dbPassword);
+        conn = DriverManager.getConnection(jdbcUrl, dbUser, dbPassword);
         // Establish connection
     	ApplicationDB db = new ApplicationDB();	
         conn = db.getConnection(); 
