@@ -121,15 +121,18 @@
 			/* 
 			- get all the transit lines (passed in hidden inputs)
 			- query:
-				SELECT transit_line_name, sum(total_fare)
+				SELECT transit_line_name, sum(total_fare) revenue
 				FROM reservations
 				JOIN has_transit USING(username, res_number)
+				RIGHT OUTER JOIN transit_lines_have USING (transit_line_name)
 				GROUP BY transit_line_name
 				ORDER BY transit_line_name
+				
+				right outer join with transit_lines_have so we can see the names of transit lines with no reservations
 			*/
 			
 
-			String query = "SELECT transit_line_name, sum(total_fare) revenue FROM reservations JOIN has_transit USING(username, res_number) GROUP BY transit_line_name ORDER BY transit_line_name";
+			String query = "SELECT transit_line_name, sum(total_fare) revenue FROM reservations JOIN has_transit USING(username, res_number) RIGHT OUTER JOIN transit_lines_have USING (transit_line_name) GROUP BY transit_line_name ORDER BY transit_line_name";
 			stmt = conn.prepareStatement(query);
 			rs = stmt.executeQuery();
 			if(rs.next()){
@@ -159,7 +162,7 @@
             } else { 
                 %>
                 <div class="container">
-                    <h3>No sales data found for the selected month.</h3>
+                    <h3>No sales data found for the selected transit line.</h3>
                 </div>
                 <%
             } 

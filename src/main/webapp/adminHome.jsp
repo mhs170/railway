@@ -7,6 +7,14 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Admin Home Page</title>
+<style>
+    .inline-forms {
+        display: flex;
+        align-items: center;
+        gap: 20px; /* Adjust spacing between forms */
+    }
+</style>
+
 </head>
 <body>
 <% 
@@ -102,12 +110,12 @@
 			}
 		</script>
 		
-		
     	<br>
     	
+    	<h3>Create A New Customer Representative</h3>
     	<!-- "create new customer representative button -->
     	<form method="get" action="createCustomerRepAccount.jsp">
-        	<button type="submit">Create New Customer Representative Account</button>
+        	<button type="submit">Click Here to Create</button>
     	</form>
     	
     </div>
@@ -115,7 +123,9 @@
     <hr>
     
     <div>
-    	<h2>Obtain Sales Report</h2>
+		<h2>Manage Money</h2>
+		
+    	<h3>Obtain Sales Report</h3>
     <!-- obtain sales report:
     - input a month and year (date)
     - redirect to getSalesReport.jsp
@@ -138,6 +148,8 @@
 	    	</span>
 		  	<button type="submit" name="action" value="year"> Get Sales Report</button>
 		</form>
+
+		<br>
 		
 		<!-- get listing of revenue: 
 		- by transit line
@@ -146,55 +158,55 @@
 			- sum total_fare of all the reservations
 		-->
 		
-		<form method="post" action="getRevenuePerTransitLine.jsp">
-			<!-- Input information -->
-	    	<span>
-    	 		<label for="transit_line_name">By Transit Line: </label>
-               	<select id="transit_line_name" name="transit_line_name" required>
-                   <option value="" disabled selected>Select Transit Line</option>
-                   <% for (String name : transitLineNames) { %>
-                       <option value="<%= name %>"><%= name %></option>
-                   <% } %>
-               </select>
-	    	</span>
-	    	
-		  	<button type="submit" name="action" value="search"> Get Revenue</button>
-		</form>
-		
-		  	<!-- view all transit lines-->
-		<form method="post" action="getRevenuePerTransitLine.jsp">
-			<button type="submit" name="action" value="viewAll"> View Revenue for all Transit Lines</button>
-		</form>
-		
+		<h3>Obtain Revenue Listing</h3>
+		<div class="inline-forms">
+			<form method="post" action="getRevenuePerTransitLine.jsp">
+				<!-- Input information -->
+		    	<span>
+	    	 		<label for="transit_line_name">By Transit Line: </label>
+	               	<select id="transit_line_name" name="transit_line_name" required>
+	                   <option value="" disabled selected>Select Transit Line</option>
+	                   <% for (String name : transitLineNames) { %>
+	                       <option value="<%= name %>"><%= name %></option>
+	                   <% } %>
+	               </select>
+		    	</span>
+		    	
+			  	<button type="submit" name="action" value="search"> Get Revenue</button>
+			</form>
+			
+			  	<!-- view all transit lines-->
+			<form method="post" action="getRevenuePerTransitLine.jsp">
+				<button type="submit" name="action" value="viewAll"> View Revenue for all Transit Lines</button>
+			</form>
+		</div>
 		<!-- 
 		- by customer:
 			- get customer name (query for it up top to show in the list)
 			- join customers and reservations on username
 			- sum total_fare of all the reservations 
 		 -->
-		
-		<form method="post" action="getRevenuePerCustomer.jsp">
-			<!-- Input information -->
-	    	<span>
-	      		<label for="customer_name">By Customer: </label>
-               	<select id="customer_name" name="customer_username" required>
-                   <option value="" disabled selected>Select Customer</option>
-                   <% for (List<String> name : customers) { %>
-                       <option value="<%= name.get(0) %>"><%= name.get(1) %></option>
-                       <!-- pass username to getRevenuePerCustomer.jsp, but display real name -->
-                   <% } %>
-               </select>
-	    	</span>
-		  	<button type="submit" name="action" value="search"> Get Revenue</button>
-		</form>
-		
+		<div class="inline-forms">
+			<form method="post" action="getRevenuePerCustomer.jsp">
+				<!-- Input information -->
+		    	<span>
+		      		<label for="customer_name">By Customer: </label>
+	               	<select id="customer_name" name="customer_username" required>
+	                   <option value="" disabled selected>Select Customer</option>
+	                   <% for (List<String> name : customers) { %>
+	                       <option value="<%= name.get(0) %>"><%= name.get(1) %></option>
+	                       <!-- pass username to getRevenuePerCustomer.jsp, but display real name -->
+	                   <% } %>
+	               </select>
+		    	</span>
+			  	<button type="submit" name="action" value="search"> Get Revenue</button>
+			</form>
+			
 		  	<!-- view all customers? -->
-		<form method="post" action="getRevenuePerCustomer.jsp">
-			<button type="submit" name="action" value="viewAll"> View Revenue for all Customers</button>
-		</form>
-		
-		
-    </div>
+			<form method="post" action="getRevenuePerCustomer.jsp">
+				<button type="submit" name="action" value="viewAll"> View Revenue for all Customers</button>
+			</form>
+		</div>
     
     <hr>
     

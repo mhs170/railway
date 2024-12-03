@@ -62,12 +62,13 @@
 -search
 	- get custUsername= request.getParameter(customer_username)
 	- query:
-	SELECT sum(total_fare)
-	FROM reservations
-	JOIN users USING(username)
+	SELECT username, f_name, l_name, sum(total_fare)
+	FROM users
 	JOIN customers USING(username)
-	WHERE username = custUsername
+	LEFT OUTER JOIN reservations USING(username)
+	WHERE username = ?
 	
+	- left outer join with reservation, so that people with no reservations still show up in the result set.
 	-print result in pretty table
  -->
  
@@ -86,13 +87,13 @@
 		if(action.equals("search")){
 			//user pressed search
 			String custUsername= request.getParameter("customer_username");
-			String query = "SELECT username, f_name, l_name, sum(total_fare) revenue FROM reservations JOIN users USING(username) JOIN customers USING(username) WHERE username = ?";
+			String query = "SELECT f_name, l_name, sum(total_fare) revenue FROM users JOIN customers USING(username) LEFT OUTER JOIN reservations USING(username) WHERE username = ?";
 			stmt = conn.prepareStatement(query);
 			stmt.setString(1, custUsername);
 			
-			out.println(custUsername);
 			rs = stmt.executeQuery();
-			if(rs.next() && rs.getString("username")!=null ){
+			if(rs.next()){
+				//have to check if username is null too because it wasn't catching customers that exist but made no reservations 
 				double revenue = rs.getDouble("revenue");
                 %>
                 <div class="container">
@@ -109,9 +110,9 @@
                 </div>
                 <% 
             } else { 
-                %>
+            	%>
                 <div class="container">
-                    <h3>No sales data found for the selected customer.</h3>
+                    <h3>No sales data found for the selected user.</h3>
                 </div>
                 <%
             } 
@@ -123,15 +124,16 @@
 			/* 
 			- get all the transit lines (passed in hidden inputs)
 			- query:
-				SELECT f_name, l_name, sum(total_fare)
-				FROM reservations
-				JOIN users USING(username)
+				SELECT username, f_name, l_name, sum(total_fare)
+				FROM users
 				JOIN customers USING(username)
-				GROUP BY l_name, f_name
+				LEFT OUTER JOIN reservations USING(username)
+				GROUP BY username, f_name, l_name;
+				ORDER BY l_name
 			*/
 			
 
-			String query = "SELECT f_name, l_name, sum(total_fare) revenue FROM reservations JOIN users USING(username) JOIN customers USING(username) GROUP BY l_name, f_name ORDER BY l_name";
+			String query = "SELECT f_name, l_name, sum(total_fare) revenue FROM users JOIN customers USING(username) LEFT OUTER JOIN reservations USING(username) GROUP BY l_name, f_name ORDER BY l_name ";
 			stmt = conn.prepareStatement(query);
 			rs = stmt.executeQuery();
 			if(rs.next()){
@@ -161,7 +163,7 @@
             } else { 
                 %>
                 <div class="container">
-                    <h3>No sales data found for the selected month.</h3>
+                    <h3>No sales data found for the selected user.</h3>
                 </div>
                 <%
             } 
