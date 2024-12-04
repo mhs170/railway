@@ -44,7 +44,7 @@
                     ApplicationDB db = new ApplicationDB();
                     conn = db.getConnection();
                
-                    stmt = conn.prepareStatement("SELECT res_number, total_fare, date FROM reservations WHERE username = ? ORDER BY date DESC");
+                    stmt = conn.prepareStatement("SELECT res_number, total_fare, dateOfDeparture FROM reservations WHERE username = ? ORDER BY dateOfDeparture DESC");
                     stmt.setString(1, username);
                     rs = stmt.executeQuery();
 
@@ -56,7 +56,7 @@
                 <tr>
                     <th>Reservation Number</th>
                     <th>Total Fare</th>
-                    <th>Date and Time</th>
+                    <th>Date of Departure</th>
                     <th>Status</th>
                 </tr>
             </thead>
@@ -66,15 +66,15 @@
                         hasReservations = true;
                         int resNumber = rs.getInt("res_number");
                         double totalFare = rs.getDouble("total_fare");
-                        Timestamp reservationDatetime = rs.getTimestamp("date");
-                        LocalDateTime reservationDateTime = reservationDatetime.toLocalDateTime();
+                        Timestamp departureDatetime = rs.getTimestamp("dateOfDeparture");
+                        LocalDateTime departureDateTime = departureDatetime.toLocalDateTime();
                 %>
                 <tr>
                     <td><%= resNumber %></td>
                     <td>$<%= totalFare %></td>
-                    <td><%= reservationDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")) %></td> <!-- Display date and time -->
+                    <td><%= departureDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) %></td>
                     <td>
-                        <% if (reservationDateTime.isAfter(now)) { %> 
+                        <% if (departureDateTime.isAfter(now)) { %> 
                             <form method="post" action="cancelReservation.jsp" style="display: inline;" onsubmit="return confirm('Are you sure you want to cancel this reservation?');">
                                 <input type="hidden" name="res_number" value="<%= resNumber %>">
                                 <button type="submit">Cancel</button>
@@ -89,7 +89,7 @@
                     if (!hasReservations) {
                 %>
                 <tr>
-                    <td colspan="5" class="no-reservations">No reservations found.</td>
+                    <td colspan="4" class="no-reservations">No reservations found.</td>
                 </tr>
                 <%
                     }
