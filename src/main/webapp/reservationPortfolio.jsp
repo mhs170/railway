@@ -48,8 +48,33 @@
                     stmt.setString(1, username);
                     rs = stmt.executeQuery();
 
-                    boolean hasReservations = false;
+                    List<Map<String, Object>> currentReservations = new ArrayList<Map<String, Object>>();
+                    List<Map<String, Object>> pastReservations = new ArrayList<Map<String, Object>>();
                     LocalDateTime now = LocalDateTime.now(); 
+
+                    while (rs.next()) {
+                        int resNumber = rs.getInt("res_number");
+                        double totalFare = rs.getDouble("total_fare");
+                        Timestamp departureDatetime = rs.getTimestamp("dateOfDeparture");
+                        LocalDateTime departureDateTime = (departureDatetime != null) ? departureDatetime.toLocalDateTime() : null;
+
+                        Map<String, Object> reservation = new HashMap<String, Object>();
+                        reservation.put("resNumber", resNumber);
+                        reservation.put("totalFare", totalFare);
+                        reservation.put("departureDateTime", departureDateTime);
+
+                        if (departureDateTime != null && departureDateTime.isAfter(now)) {
+                            currentReservations.add(reservation);
+                        } else {
+                            pastReservations.add(reservation);
+                        }
+                    }
+        %>
+
+        <!-- Display Current Reservations -->
+        <h2>Current Reservations</h2>
+        <%
+            if (!currentReservations.isEmpty()) {
         %>
         <table>
             <thead>
@@ -62,34 +87,21 @@
             </thead>
             <tbody>
                 <%
-                    while (rs.next()) {
-                        hasReservations = true;
-                        int resNumber = rs.getInt("res_number");
-                        double totalFare = rs.getDouble("total_fare");
-                        Timestamp departureDatetime = rs.getTimestamp("dateOfDeparture");
-                        LocalDateTime departureDateTime = departureDatetime.toLocalDateTime();
+                    for (Map<String, Object> res : currentReservations) {
+                        int resNumber = (Integer) res.get("resNumber");
+                        double totalFare = (Double) res.get("totalFare");
+                        LocalDateTime departureDateTime = (LocalDateTime) res.get("departureDateTime");
                 %>
                 <tr>
                     <td><%= resNumber %></td>
                     <td>$<%= totalFare %></td>
                     <td><%= departureDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) %></td>
                     <td>
-                        <% if (departureDateTime.isAfter(now)) { %> 
-                            <form method="post" action="cancelReservation.jsp" style="display: inline;" onsubmit="return confirm('Are you sure you want to cancel this reservation?');">
-                                <input type="hidden" name="res_number" value="<%= resNumber %>">
-                                <button type="submit">Cancel</button>
-                            </form>
-                        <% } else { %>
-                            Past Reservation
-                        <% } %>
+                        <form method="post" action="cancelReservation.jsp" style="display: inline;" onsubmit="return confirm('Are you sure you want to cancel this reservation?');">
+                            <input type="hidden" name="res_number" value="<%= resNumber %>">
+                            <button type="submit">Cancel</button>
+                        </form>
                     </td>
-                </tr>
-                <%
-                    }
-                    if (!hasReservations) {
-                %>
-                <tr>
-                    <td colspan="4" class="no-reservations">No reservations found.</td>
                 </tr>
                 <%
                     }
@@ -97,20 +109,65 @@
             </tbody>
         </table>
         <%
-                } catch (Exception e) {
-                    out.println("<p>Error: " + e.getMessage() + "</p>");
-                } finally {
-                    if (rs != null) rs.close();
-                    if (stmt != null) stmt.close();
-                    if (conn != null) conn.close();
-                }
             } else {
+        %>
+        <div class="no-reservations">No current reservations found.</div>
+        <%
+            }
+
+            // Display Past Reservations
+        %>
+        <h2>Past Reservations</h2>
+        <%
+            if (!pastReservations.isEmpty()) {
+        %>
+        <table>
+            <thead>
+                <tr>
+                    <th>Reservation Number</th>
+                    <th>Total Fare</th>
+                    <th>Date of Departure</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                <%
+                    for (Map<String, Object> res : pastReservations) {
+                        int resNumber = (Integer) res.get("resNumber");
+                        double totalFare = (Double) res.get("totalFare");
+                        LocalDateTime departureDateTime = (LocalDateTime) res.get("departureDateTime");
+                %>
+                <tr>
+                    <td><%= resNumber %></td>
+                    <td>$<%= totalFare %></td>
+                    <td><%= departureDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) %></td>
+                    <td>Past Reservation</td>
+                </tr>
+                <%
+                    }
+                %>
+            </tbody>
+        </table>
+        <%
+            } else {
+        %>
+        <div class="no-reservations">No past reservations found.</div>
+        <%
+            }
+        } catch (Exception e) {
+            out.println("<p>Error: " + e.getMessage() + "</p>");
+        } finally {
+            if (rs != null) rs.close();
+            if (stmt != null) stmt.close();
+            if (conn != null) conn.close();
+        }
+        } else {
         %>
         <div style="text-align: center;">
             <h2>You are not logged in! Please <a href="login.jsp">login</a>.</h2>
         </div>
         <%
-            }
+        }
         %>
     </div>
 </body>
