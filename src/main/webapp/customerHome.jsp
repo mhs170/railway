@@ -193,6 +193,13 @@
 			</div>
 </div>
 
+<div>
+<h2 >View Your Reservations</h2>
+<form action="reservationPortfolio.jsp" method="get">
+        <button type="submit">View</button>
+    </form>
+</div>
+
 <!-- TODO: browse, search for, and ask questions -->
 
 <%
