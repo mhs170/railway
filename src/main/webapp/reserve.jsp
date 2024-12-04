@@ -1,148 +1,87 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1" import="com.cs336.pkg.*"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="com.cs336.pkg.ApplicationDB" %>
 <%@ page import="java.io.*,java.util.*,java.sql.*"%>
 <%@ page import="javax.servlet.http.*,javax.servlet.*"%>
-<%@ page import="java.time.format.DateTimeFormatter,java.time.LocalDateTime"%>
+<%@ page import="com.cs336.pkg.createResNumber" %>
+
 <!DOCTYPE html>
 <html>
-
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Reservation Creation</title>
-<link rel="stylesheet" href="home.css">
+    <meta charset="UTF-8">
+    <title>Reservation Confirmation</title>
 </head>
 <body>
-	<div>
-		<% 
-		try{
-			session.getAttribute("username").equals("");
-			}catch(Exception e){ 
-				out.println("Invalid Session");
-				out.println(e);
-			%>	
-				<div class="errorMessage">
-					Your session has expired, please <a href="login.jsp">login</a> again. 
-				</div>
-			<% 	
-				return;
-			}
-		%>
-	</div>
-	<h1 class="title">
-		Train Reservation System
-	</h1>
-	
-	<% 
-	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-	LocalDateTime now = LocalDateTime.now();
-	String dateOfCreation = dtf.format(now);
-	String username = (String) session.getAttribute("username");
-	out.println(username);
-	out.println(dateOfCreation); 
-	
-	String transitNames = request.getParameter("transitName");
-	String trainIDs = request.getParameter("trainID");
-	String originStations = request.getParameter("originStation");
-	String destinationStations = request.getParameter("destinationStation");
-	
-	String[] transitName = transitNames.split(",");
-	String[] trainID = trainIDs.split(",");
-	String[] originStation = originStations.split(",");
-	String[] destinationStation = destinationStations.split(",");
-	
-	String value = request.getParameter("discount");
-	out.println(value);
-	
-	ArrayList<Double> fare = new ArrayList<Double>();
-	ArrayList<String> departDate = new ArrayList<String>();
-	ArrayList<String> departTime = new ArrayList<String>();
-	
-	int totalRes = 0;
-	try{
-		ApplicationDB db = new ApplicationDB();	
-		Connection con = db.getConnection();
-		String query = "select fare, departure from transit_lines_have where transit_line_name = ? and train_id = ? and origin = ? and destination = ?;";
-		PreparedStatement pstmt = con.prepareStatement(query);
-		for(int i = 0; i < transitName.length; i++){
-			pstmt.setString(1, transitName[i]);
-			pstmt.setInt(2, Integer.valueOf(trainID[i]));
-			pstmt.setInt(3, Integer.valueOf(originStation[i]));
-			pstmt.setInt(4, Integer.valueOf(destinationStation[i]));
-			try{
-				ResultSet result = pstmt.executeQuery();
-				while(result.next()){
-					double totalFare = result.getDouble("fixedFare");
-					if(value.equals("senior")){
-						totalFare = totalFare - (totalFare * .35);
-					}else if(value.equals("child")){
-						totalFare = totalFare - (totalFare * .25);
-					}else if(value.equals("disable")){
-						totalFare = totalFare - (totalFare * .5);
-					}
-					fare.add(totalFare);
-					String departDatetime = result.getString("departDatetime");
-					String[] dDatetime = departDatetime.split(" ");
-					departDate.add(dDatetime[0]);
-					departTime.add(dDatetime[1]);
-				}
-				result.close();
-			}catch(Exception e){
-				out.println("Query Failed");
-				out.println(e);
-				out.println("Query failed! Please try again!");
-			}
-		}
-		
-		query = "select count(*) as \"totalRes\" from Reservations;";
-		pstmt = con.prepareStatement(query);
-		try{
-			ResultSet result = pstmt.executeQuery();
-			while(result.next()){
-				totalRes = result.getInt("totalRes");
-			}
-		}catch(Exception e){
-			out.println("Query Failed");
-			out.println(e);
-			out.println("Query failed! Please try again!");
-		}
-		
-		query = "insert into reservations values (?, ?, ?, ?);";
-		pstmt = con.prepareStatement(query);
-		for(int i = 0; i < transitName.length; i++){
-			pstmt.setInt(1, totalRes);
-			pstmt.setString(2, dateOfCreation);
-			pstmt.setString(3, username);
-			pstmt.setString(4, transitName[i]);
-			pstmt.setInt(5, Integer.valueOf(trainID[i]));
-			pstmt.setInt(6, Integer.valueOf(originStation[i]));
-			pstmt.setInt(7, Integer.valueOf(destinationStation[i]));
-			pstmt.setString(8, departTime.get(i));
-			pstmt.setString(9, departDate.get(i));
-			pstmt.setDouble(10, fare.get(i));
-			totalRes++;
-			out.println(pstmt);
-			try{
-				pstmt.executeUpdate();
-			}catch(Exception e){
-				out.println("Failed to insert " + String.valueOf(totalRes) + transitName[i] + " " + trainID[i] + " " + " " + originStation[i] + " " + destinationStation[i]);
-				out.println(e);
-				out.println("Failed to insert " + transitName[i] + " " + trainID[i] + " " + " " + originStation[i] + " " + destinationStation[i]);
-			}
-			
-		}
-		pstmt.close();
-		out.println("Disconnecting from database");
-		con.close();
-	}catch(Exception e){
-		out.println("Failed to connect to database");
-		out.println(e);
-		out.println("Failed to connect to database");
-	}
-	%>
-	<div>
-		<h2>
-			Please go back to <a href="customerHome.jsp">home</a>.
-		</h2>
-	</div>
+<%
+    String username = (String) session.getAttribute("username");
+    if (username != null) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            ApplicationDB db = new ApplicationDB();
+            conn = db.getConnection();
+
+            // Get form data
+            String transitName = request.getParameter("transitName");
+            String trainID = request.getParameter("trainID");
+            String originStation = request.getParameter("originStation");
+            String destinationStation = request.getParameter("destinationStation");
+            String discount = request.getParameter("discount");
+
+            // Validate form data (optional)
+
+            // Generate a reservation number
+            int resNumber = createResNumber.getNextReservationNumber(conn);
+
+            // Insert reservation into Reservations table
+            String reservationQuery = "INSERT INTO Reservations (username, res_number) VALUES (?, ?)";
+            ps = conn.prepareStatement(reservationQuery);
+            ps.setString(1, username);
+            ps.setInt(2, resNumber);
+            ps.executeUpdate();
+            
+
+
+            // Insert origin station into Has_Origin table
+            String originQuery = "INSERT INTO Has_Origin (res_number, transit_line_name, station_id, username) VALUES (?, ?, ?, ?)";
+            ps = conn.prepareStatement(originQuery);
+            ps.setInt(1, resNumber);
+            ps.setString(2, transitName);
+            ps.setInt(3, createResNumber.getStationID(conn, originStation));
+            ps.setString(4, username);
+            ps.executeUpdate();
+
+            // Insert destination station into Has_destination table (similar to origin)
+            String destinationQuery = "INSERT INTO has_destination (res_number, transit_line_name, station_id, username) VALUES (?, ?, ?, ?)";
+            ps = conn.prepareStatement(destinationQuery);
+            ps.setInt(1, resNumber);
+            ps.setString(2, transitName);
+            ps.setInt(3, createResNumber.getStationID(conn, originStation));
+            ps.setString(4, username);
+            ps.executeUpdate();
+
+            // Handle discount (logic depends on your discount implementation)
+
+            out.println("<h3>Reservation Created Successfully!</h3>");
+            out.println("Your Reservation Number: " + resNumber);
+            // Display additional details if needed (e.g., discount applied)
+
+        } catch (Exception e) {
+            out.println("Error creating reservation: " + e.getMessage());
+            e.printStackTrace(); // Log the exception for debugging
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (ps != null) ps.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    } else {
+        out.println("You are not logged in! Please <a href=\"login.jsp\">login</a> again.");
+    }
+%>
 </body>
 </html>
