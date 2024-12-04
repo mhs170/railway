@@ -71,7 +71,7 @@
                     }
         %>
 
-        <!-- Display Current Reservations -->
+        
         <h2>Current Reservations</h2>
         <%
             if (!currentReservations.isEmpty()) {
@@ -95,7 +95,15 @@
                 <tr>
                     <td><%= resNumber %></td>
                     <td>$<%= totalFare %></td>
-                    <td><%= departureDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) %></td>
+                    <td>
+                        <%
+                            if (departureDateTime != null) {
+                                out.print(departureDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+                            } else {
+                                out.print("N/A");
+                            }
+                        %>
+                    </td>
                     <td>
                         <form method="post" action="cancelReservation.jsp" style="display: inline;" onsubmit="return confirm('Are you sure you want to cancel this reservation?');">
                             <input type="hidden" name="res_number" value="<%= resNumber %>">
@@ -127,7 +135,7 @@
                     <th>Reservation Number</th>
                     <th>Total Fare</th>
                     <th>Date of Departure</th>
-                    
+                    <th>Status</th>
                 </tr>
             </thead>
             <tbody>
@@ -140,7 +148,15 @@
                 <tr>
                     <td><%= resNumber %></td>
                     <td>$<%= totalFare %></td>
-                    <td><%= departureDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) %></td>
+                    <td>
+                        <%
+                            if (departureDateTime != null) {
+                                out.print(departureDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+                            } else {
+                                out.print("N/A");
+                            }
+                        %>
+                    </td>
                     <td>Past Reservation</td>
                 </tr>
                 <%
