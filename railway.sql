@@ -28,7 +28,7 @@ CREATE TABLE `admin` (
   `username` varchar(20) NOT NULL,
   `ssn` varchar(11) NOT NULL,
   PRIMARY KEY (`username`),
-  CONSTRAINT `admin_ibfk_1` FOREIGN KEY (`username`) REFERENCES `users` (`username`)
+  CONSTRAINT `admin_ibfk_1` FOREIGN KEY (`username`) REFERENCES `users` (`username`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -50,9 +50,9 @@ DROP TABLE IF EXISTS `customer_representatives`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `customer_representatives` (
   `username` varchar(20) NOT NULL,
-  `ssn` varchar(11) NOT NULL UNIQUE,
+  `ssn` varchar(11) NOT NULL,
   PRIMARY KEY (`username`),
-  CONSTRAINT `customer_representatives_ibfk_1` FOREIGN KEY (`username`) REFERENCES `users` (`username`)
+  CONSTRAINT `customer_representatives_ibfk_1` FOREIGN KEY (`username`) REFERENCES `users` (`username`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -104,7 +104,7 @@ CREATE TABLE `has_destination` (
   `station_id` int DEFAULT NULL,
   PRIMARY KEY (`username`,`res_number`),
   KEY `transit_line_name` (`transit_line_name`,`station_id`),
-  CONSTRAINT `has_destination_ibfk_1` FOREIGN KEY (`username`, `res_number`) REFERENCES `reservations` (`username`, `res_number`),
+  CONSTRAINT `has_destination_ibfk_1` FOREIGN KEY (`username`, `res_number`) REFERENCES `reservations` (`username`, `res_number`) ON DELETE CASCADE,
   CONSTRAINT `has_destination_ibfk_2` FOREIGN KEY (`transit_line_name`, `station_id`) REFERENCES `stops` (`transit_line_name`, `station_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -115,6 +115,7 @@ CREATE TABLE `has_destination` (
 
 LOCK TABLES `has_destination` WRITE;
 /*!40000 ALTER TABLE `has_destination` DISABLE KEYS */;
+INSERT INTO `has_destination` VALUES ('johndoe',1,'Northeast',2);
 /*!40000 ALTER TABLE `has_destination` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -130,9 +131,10 @@ CREATE TABLE `has_origin` (
   `res_number` int NOT NULL,
   `transit_line_name` varchar(50) DEFAULT NULL,
   `station_id` int DEFAULT NULL,
-  PRIMARY KEY (`username`,`res_number`),
+  PRIMARY KEY (`res_number`),
   KEY `transit_line_name` (`transit_line_name`,`station_id`),
-  CONSTRAINT `has_origin_ibfk_1` FOREIGN KEY (`username`, `res_number`) REFERENCES `reservations` (`username`, `res_number`),
+  KEY `has_origin_ibfk_1` (`username`,`res_number`),
+  CONSTRAINT `has_origin_ibfk_1` FOREIGN KEY (`username`, `res_number`) REFERENCES `reservations` (`username`, `res_number`) ON DELETE CASCADE,
   CONSTRAINT `has_origin_ibfk_2` FOREIGN KEY (`transit_line_name`, `station_id`) REFERENCES `stops` (`transit_line_name`, `station_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -143,6 +145,7 @@ CREATE TABLE `has_origin` (
 
 LOCK TABLES `has_origin` WRITE;
 /*!40000 ALTER TABLE `has_origin` DISABLE KEYS */;
+INSERT INTO `has_origin` VALUES ('johndoe',1,'Northeast',1);
 /*!40000 ALTER TABLE `has_origin` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -206,6 +209,7 @@ CREATE TABLE `reservations` (
   `res_number` int NOT NULL,
   `total_fare` float DEFAULT NULL,
   `date` date DEFAULT NULL,
+  `dateOfDeparture` date DEFAULT NULL,
   PRIMARY KEY (`username`,`res_number`),
   CONSTRAINT `reservations_ibfk_1` FOREIGN KEY (`username`) REFERENCES `users` (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -217,6 +221,7 @@ CREATE TABLE `reservations` (
 
 LOCK TABLES `reservations` WRITE;
 /*!40000 ALTER TABLE `reservations` DISABLE KEYS */;
+INSERT INTO `reservations` VALUES ('johndoe',1,10,'2024-12-04','2024-12-05');
 /*!40000 ALTER TABLE `reservations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -242,6 +247,7 @@ CREATE TABLE `stations` (
 
 LOCK TABLES `stations` WRITE;
 /*!40000 ALTER TABLE `stations` DISABLE KEYS */;
+INSERT INTO `stations` VALUES (1,'New York Penn','New York City','NY'),(2,'Newark Penn','Newark','NJ');
 /*!40000 ALTER TABLE `stations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -270,6 +276,7 @@ CREATE TABLE `stops` (
 
 LOCK TABLES `stops` WRITE;
 /*!40000 ALTER TABLE `stops` DISABLE KEYS */;
+INSERT INTO `stops` VALUES ('Northeast',1,'2024-12-05 09:55:00','2024-12-05 10:00:00'),('Northeast',2,'2024-12-05 10:30:00','2024-12-05 10:35:00');
 /*!40000 ALTER TABLE `stops` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -292,6 +299,7 @@ CREATE TABLE `trains` (
 
 LOCK TABLES `trains` WRITE;
 /*!40000 ALTER TABLE `trains` DISABLE KEYS */;
+INSERT INTO `trains` VALUES (1);
 /*!40000 ALTER TABLE `trains` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -323,6 +331,7 @@ CREATE TABLE `transit_lines_have` (
 
 LOCK TABLES `transit_lines_have` WRITE;
 /*!40000 ALTER TABLE `transit_lines_have` DISABLE KEYS */;
+INSERT INTO `transit_lines_have` VALUES ('Northeast',1,'New York Penn','Newark Penn','2024-12-05 10:30:00','2024-12-05 10:00:00',10,1);
 /*!40000 ALTER TABLE `transit_lines_have` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -348,7 +357,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES ('guest','guestpassword',NULL,NULL),('johndoe','pass','John','Doe');
+INSERT INTO `users` VALUES ('johndoe','pass','John','Doe');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -361,4 +370,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-11-26 18:25:49
+-- Dump completed on 2024-12-04 18:21:01
