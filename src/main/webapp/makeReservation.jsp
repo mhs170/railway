@@ -143,23 +143,24 @@
 					<label for="destinationStation">Destination Station</label>
 					<input id="destinationStation" name="destinationStation" required/>
 				</span>
-				<span>
-					<label for="disabled"> None </label>
-					<input id="disabled" type="radio" name="discount" value="none" checked/>
-				</span>
-				<span>
-					<label for="child"> Senior</label>
-					<input id="child" type="radio" name="discount" value="senior"/>
-				</span>
-				<span>
-					<label for="child"> Child </label>
-					<input id="child" type="radio" name="discount" value="child"/>
-				</span>
-				<span>
-					<label for="disabled"> Disabled</label>
-					<input id="disabled" type="radio" name="discount" value="disable"/>
-				</span>
-				<button type="submit"> Create </button>
+				 <span>
+                <label for="tripType">Trip Type</label>
+                <select id="tripType" name="tripType" required>
+                    <option value="oneWay">One Way</option>
+                    <option value="roundTrip">Round Trip</option>
+                </select>
+            </span>
+            <!-- Discount Options Dropdown -->
+            <span>
+                <label for="discount">Discount</label>
+                <select id="discount" name="discount" required>
+                    <option value="none">None</option>
+                    <option value="senior">Senior</option>
+                    <option value="child">Child</option>
+                    <option value="disabled">Disabled</option>
+                </select>
+            </span>				
+            <button type="submit"> Create </button>
 			</div>
 		</form>
 	</div>
