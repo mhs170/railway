@@ -97,7 +97,7 @@
             ps.executeUpdate();
 
             // Insert origin station into Has_Origin table
-            String originQuery = "INSERT INTO Has_Origin (res_number, transit_line_name, station_id, username) VALUES (?, ?, ?, ?)";
+            String originQuery = "INSERT INTO has_origin (res_number, transit_line_name, station_id, username) VALUES (?, ?, ?, ?)";
             ps = conn.prepareStatement(originQuery);
             ps.setInt(1, resNumber);
             ps.setString(2, transitName);
@@ -113,6 +113,15 @@
             ps.setInt(3, createResNumber.getStationID(conn, destinationStation));
             ps.setString(4, username);
             ps.executeUpdate();
+            
+         	// Insert transit line  into Has_transit table
+            String transitQuery = "INSERT INTO has_transit (username, res_number, transit_line_name) VALUES (?, ?, ?)";
+            ps = conn.prepareStatement(transitQuery);
+            ps.setString(1, username);
+            ps.setInt(2, resNumber);
+            ps.setString(3, transitName);
+            ps.executeUpdate();
+            
 
             // Confirm reservation creation
             out.println("<h3>Reservation Created Successfully!</h3>");

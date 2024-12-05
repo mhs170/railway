@@ -90,7 +90,7 @@
 	      		<input id="destinationStation" type='text' name="destinationStation" placeholder="Enter Destination"/>
 	    	</span>
 	    	<span>
-	      		<label for="dateOfTravel" >Date Of Travel</label>
+	      		<label for="dateOfTravel" >Date Of Travel (not required)</label>
 	      		<input id="dateOfTravel" type='date' name="dateOfTravel" placeholder="YYYY-MM-DD"/>
 	    	</span>
 	    	<span>

@@ -1,6 +1,6 @@
 CREATE DATABASE  IF NOT EXISTS `cs336project` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `cs336project`;
--- MySQL dump 10.13  Distrib 8.0.40, for macos14 (arm64)
+-- MySQL dump 10.13  Distrib 8.0.40, for macos14 (x86_64)
 --
 -- Host: localhost    Database: cs336project
 -- ------------------------------------------------------
@@ -38,6 +38,7 @@ CREATE TABLE `admin` (
 
 LOCK TABLES `admin` WRITE;
 /*!40000 ALTER TABLE `admin` DISABLE KEYS */;
+INSERT INTO `admin` VALUES ('admin','9999');
 /*!40000 ALTER TABLE `admin` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -62,6 +63,7 @@ CREATE TABLE `customer_representatives` (
 
 LOCK TABLES `customer_representatives` WRITE;
 /*!40000 ALTER TABLE `customer_representatives` DISABLE KEYS */;
+INSERT INTO `customer_representatives` VALUES ('custrep','8888');
 /*!40000 ALTER TABLE `customer_representatives` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -161,7 +163,7 @@ CREATE TABLE `has_transit` (
   `res_number` int NOT NULL,
   `transit_line_name` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`username`,`res_number`),
-  CONSTRAINT `has_transit_ibfk_1` FOREIGN KEY (`username`, `res_number`) REFERENCES `reservations` (`username`, `res_number`)
+  CONSTRAINT `has_transit_ibfk_1` FOREIGN KEY (`username`, `res_number`) REFERENCES `reservations` (`username`, `res_number`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -171,6 +173,7 @@ CREATE TABLE `has_transit` (
 
 LOCK TABLES `has_transit` WRITE;
 /*!40000 ALTER TABLE `has_transit` DISABLE KEYS */;
+INSERT INTO `has_transit` VALUES ('johndoe',1,'Northeast');
 /*!40000 ALTER TABLE `has_transit` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -357,7 +360,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES ('johndoe','pass','John','Doe');
+INSERT INTO `users` VALUES ('admin','pass','adminFirst','adminLast'),('custrep','pass','Customer','Representative'),('johndoe','pass','John','Doe');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -370,4 +373,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-12-04 18:21:01
+-- Dump completed on 2024-12-04 20:01:18

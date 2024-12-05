@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ page import="java.sql.*"%>
+<%@ page import="com.cs336.pkg.ApplicationDB" %>
 <%
     String username = (String) session.getAttribute("username");
     int resNumber = Integer.parseInt(request.getParameter("res_number"));
@@ -8,10 +9,8 @@
         Connection conn = null;
         PreparedStatement stmt = null;
         try {
-        	String jdbcUrl = "jdbc:mysql://localhost:3306/cs336project";
-            String dbUser = "root"; 
-            String dbPassword = "2024fall336project";
-            conn = DriverManager.getConnection(jdbcUrl, dbUser, dbPassword);
+        	ApplicationDB db = new ApplicationDB();
+            conn = db.getConnection();
             
             // Delete reservation query
             String query = "DELETE FROM reservations WHERE res_number = ? AND username = ?";
