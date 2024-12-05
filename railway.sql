@@ -1,6 +1,6 @@
 CREATE DATABASE  IF NOT EXISTS `cs336project` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `cs336project`;
--- MySQL dump 10.13  Distrib 8.0.40, for macos14 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.40, for macos14 (arm64)
 --
 -- Host: localhost    Database: cs336project
 -- ------------------------------------------------------
@@ -38,7 +38,6 @@ CREATE TABLE `admin` (
 
 LOCK TABLES `admin` WRITE;
 /*!40000 ALTER TABLE `admin` DISABLE KEYS */;
-INSERT INTO `admin` VALUES ('admin','9999');
 /*!40000 ALTER TABLE `admin` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -63,7 +62,7 @@ CREATE TABLE `customer_representatives` (
 
 LOCK TABLES `customer_representatives` WRITE;
 /*!40000 ALTER TABLE `customer_representatives` DISABLE KEYS */;
-INSERT INTO `customer_representatives` VALUES ('custrep','8888');
+INSERT INTO `customer_representatives` VALUES ('rep','555');
 /*!40000 ALTER TABLE `customer_representatives` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -163,7 +162,7 @@ CREATE TABLE `has_transit` (
   `res_number` int NOT NULL,
   `transit_line_name` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`username`,`res_number`),
-  CONSTRAINT `has_transit_ibfk_1` FOREIGN KEY (`username`, `res_number`) REFERENCES `reservations` (`username`, `res_number`) ON DELETE CASCADE
+  CONSTRAINT `has_transit_ibfk_1` FOREIGN KEY (`username`, `res_number`) REFERENCES `reservations` (`username`, `res_number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -173,8 +172,37 @@ CREATE TABLE `has_transit` (
 
 LOCK TABLES `has_transit` WRITE;
 /*!40000 ALTER TABLE `has_transit` DISABLE KEYS */;
-INSERT INTO `has_transit` VALUES ('johndoe',1,'Northeast');
 /*!40000 ALTER TABLE `has_transit` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `posts`
+--
+
+DROP TABLE IF EXISTS `posts`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `posts` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `parent_id` int DEFAULT NULL,
+  `type` enum('question','answer') NOT NULL,
+  `body` text NOT NULL,
+  `username` varchar(20) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `username` (`username`),
+  KEY `parent_id` (`parent_id`),
+  CONSTRAINT `posts_ibfk_1` FOREIGN KEY (`username`) REFERENCES `users` (`username`) ON DELETE CASCADE,
+  CONSTRAINT `posts_ibfk_2` FOREIGN KEY (`parent_id`) REFERENCES `posts` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `posts`
+--
+
+LOCK TABLES `posts` WRITE;
+/*!40000 ALTER TABLE `posts` DISABLE KEYS */;
+/*!40000 ALTER TABLE `posts` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -360,7 +388,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES ('admin','pass','adminFirst','adminLast'),('custrep','pass','Customer','Representative'),('johndoe','pass','John','Doe');
+INSERT INTO `users` VALUES ('johndoe','pass','John','Doe'),('rep','pass','first','last');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -373,4 +401,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-12-04 20:01:18
+-- Dump completed on 2024-12-05 10:49:13
