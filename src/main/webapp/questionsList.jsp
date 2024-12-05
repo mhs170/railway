@@ -47,21 +47,7 @@
 			ApplicationDB db = new ApplicationDB();
 			conn = db.getConnection();
 			
-			String query = "INSERT INTO posts (type, body, username) VALUES (?, ?, ?)";
-            PreparedStatement stmt = conn.prepareStatement(query);
-            stmt.setString(1, "question");
-            stmt.setString(2, question);
-            stmt.setString(3, username);
-
-            int rowsAffected = stmt.executeUpdate();
-            if (rowsAffected > 0) {
-            	
-                out.println("<p>Question submitted successfully!</p>");
-            } else {
-                out.println("<p>Failed to submit the question. Please try again.</p>");
-            }
-            stmt.close();
-            String fetchQuery = "SELECT q.id AS question_id, q.body AS question_body, q.username AS question_username, " +
+			            String fetchQuery = "SELECT q.id AS question_id, q.body AS question_body, q.username AS question_username, " +
                                 "a.body AS answer_body, a.username AS answer_username " +
                                 "FROM posts q " +
                                 "LEFT JOIN posts a ON q.id = a.parent_id AND a.type = 'answer' " +
