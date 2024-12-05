@@ -201,6 +201,14 @@
 </div>
 
 <!-- TODO: browse, search for, and ask questions -->
+<div>
+<h2>Ask a Question</h2>
+<form method="post" action="forum.jsp">
+  <label for="question">Question:</label>
+  <input type="text" id="question" name="question" size="40" required>
+  <button type="submit">Submit</button>
+</form>
+</div>
 
 <%
     } else { 
