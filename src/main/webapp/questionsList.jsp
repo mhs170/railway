@@ -38,7 +38,8 @@
 
 <% 
     String username = (String) session.getAttribute("username");
-	String question = request.getParameter("question");
+	String searchKeyword = request.getParameter("searchKeyword"); // Capture user input from the text box
+
 	
     if (username != null) {
 		
@@ -48,13 +49,29 @@
 			conn = db.getConnection();
 			
 			            String fetchQuery = "SELECT q.id AS question_id, q.body AS question_body, q.username AS question_username, " +
-                                "a.body AS answer_body, a.username AS answer_username " +
-                                "FROM posts q " +
-                                "LEFT JOIN posts a ON q.id = a.parent_id AND a.type = 'answer' " +
-                                "WHERE q.type = 'question'";
-            Statement fetchStmt = conn.createStatement();
-            ResultSet rs = fetchStmt.executeQuery(fetchQuery);
+			                    "a.body AS answer_body, a.username AS answer_username " +
+			                    "FROM posts q " +
+			                    "LEFT JOIN posts a ON q.id = a.parent_id AND a.type = 'answer' " +
+			                    "WHERE q.type = 'question'";
+			            
+			PreparedStatement fetchStmt;
+			if (searchKeyword != null && !searchKeyword.trim().isEmpty()){
+				fetchQuery += " AND q.body LIKE ?";
+				fetchStmt = conn.prepareStatement(fetchQuery);
+				fetchStmt.setString(1, "%" + searchKeyword + "%");
+			}
+			else{
+				fetchStmt = conn.prepareStatement(fetchQuery);
+			}
+            ResultSet rs = fetchStmt.executeQuery();
 %>
+
+<h3>Search forum:</h3>
+<form method="get" action="questionsList.jsp" style="display: inline-block;">
+	<input type="text" name="searchKeyword" placeholder="Enter keyword" value="<%= searchKeyword != null ? searchKeyword : "" %>" />
+	<button type="submit">Search</button>
+</form>
+
     <table border="1">
         <thead>
             <tr>
@@ -93,7 +110,7 @@
     </table>
             
 <div style="margin-top: 20px;">
-    <form action="customerHome.jsp" method="get">
-        <button type="submit">Back to Home Page</button>
-    </form>
+    <a href="customerHome.jsp">
+        <button type="button">Back to Home Page</button>
+    </a>
 </div>
