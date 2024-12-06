@@ -88,6 +88,15 @@
 </div>
 
 <div>
+<h2>Edit Schedule</h2>
+<form method="post" action="editSchedule.jsp">
+  <label for="line_name">Transit Line:</label>
+  <input type="text" id="line_name" name="line_name" required>
+  <button type="submit">Edit</button>
+</form>
+</div>
+
+<div>
 <h2>Answer a Question</h2>
 <form action="answerQuestion.jsp" method="get">
         <button type="submit">View Forum</button>
