@@ -26,6 +26,31 @@
 %>
 
 <div>
+<h2>Add Train</h2>
+<form method="post" action="createTrain.jsp">
+  <label for="train_id">Train ID:</label>
+  <input type="text" id="train_id" name="train_id" required>
+  <button type="submit">Create</button>
+</form>
+</div>
+
+<div>
+<h2>Add Station</h2>
+<form method="post" action="createStation.jsp">
+  <label for="station_id">Station ID:</label>
+  <input type="text" id="station_id" name="station_id" required>
+  <label for="station_name">Station Name:</label>
+  <input type="text" id="station_name" name="station_name" required>
+  <label for="station_city">Station City:</label>
+  <input type="text" id="station_city" name="station_city" required>
+  <label for="state">State:</label>
+  <input type="text" id="state" name="state" required>
+ 
+  <button type="submit">Create</button>
+</form>
+</div>
+
+<div>
 <h2>Answer a Question</h2>
 <form action="answerQuestion.jsp" method="get">
         <button type="submit">View Forum</button>
