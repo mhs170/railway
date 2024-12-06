@@ -38,7 +38,7 @@
 
 <% 
     String username = (String) session.getAttribute("username");
-	String searchKeyword = request.getParameter("searchKeyword"); // Capture user input from the text box
+	String searchKeyword = request.getParameter("searchKeyword"); 
 
 	
     if (username != null) {

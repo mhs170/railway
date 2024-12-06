@@ -211,7 +211,7 @@
 
 <div>
 <form action="questionsList.jsp" method="get">
-        <button type="submit">view forum</button>
+        <button type="submit">View Forum</button>
 </form>
 </div>
 
