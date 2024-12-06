@@ -116,6 +116,7 @@ CREATE TABLE `has_destination` (
 
 LOCK TABLES `has_destination` WRITE;
 /*!40000 ALTER TABLE `has_destination` DISABLE KEYS */;
+INSERT INTO `has_destination` VALUES ('johndoe',2,'Northeast',2);
 /*!40000 ALTER TABLE `has_destination` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -145,6 +146,7 @@ CREATE TABLE `has_origin` (
 
 LOCK TABLES `has_origin` WRITE;
 /*!40000 ALTER TABLE `has_origin` DISABLE KEYS */;
+INSERT INTO `has_origin` VALUES ('johndoe',2,'Northeast',1);
 /*!40000 ALTER TABLE `has_origin` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -170,6 +172,7 @@ CREATE TABLE `has_transit` (
 
 LOCK TABLES `has_transit` WRITE;
 /*!40000 ALTER TABLE `has_transit` DISABLE KEYS */;
+INSERT INTO `has_transit` VALUES ('johndoe',2,'Northeast');
 /*!40000 ALTER TABLE `has_transit` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -251,6 +254,7 @@ CREATE TABLE `reservations` (
 
 LOCK TABLES `reservations` WRITE;
 /*!40000 ALTER TABLE `reservations` DISABLE KEYS */;
+INSERT INTO `reservations` VALUES ('johndoe',1,15,'2024-12-06','2024-12-08'),('johndoe',2,7.5,'2024-12-06','2024-12-05'),('johndoe',3,15,'2024-12-06','2024-12-08');
 /*!40000 ALTER TABLE `reservations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -290,8 +294,7 @@ DROP TABLE IF EXISTS `stops`;
 CREATE TABLE `stops` (
   `transit_line_name` varchar(50) NOT NULL,
   `station_id` int NOT NULL,
-  `stop_arrival` time DEFAULT NULL,
-  `stop_departure` time DEFAULT NULL,
+  `stop_time` time DEFAULT NULL,
   PRIMARY KEY (`transit_line_name`,`station_id`),
   KEY `station_id` (`station_id`),
   CONSTRAINT `stops_ibfk_1` FOREIGN KEY (`transit_line_name`) REFERENCES `transit_lines_have` (`transit_line_name`),
@@ -305,7 +308,7 @@ CREATE TABLE `stops` (
 
 LOCK TABLES `stops` WRITE;
 /*!40000 ALTER TABLE `stops` DISABLE KEYS */;
-INSERT INTO `stops` VALUES ('Northeast',1,'09:55:00','10:00:00'),('Northeast',2,'10:30:00','10:35:00');
+INSERT INTO `stops` VALUES ('Northeast',1,NULL),('Northeast',2,NULL),('Northeast',22,NULL);
 /*!40000 ALTER TABLE `stops` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -360,7 +363,7 @@ CREATE TABLE `transit_lines_have` (
 
 LOCK TABLES `transit_lines_have` WRITE;
 /*!40000 ALTER TABLE `transit_lines_have` DISABLE KEYS */;
-INSERT INTO `transit_lines_have` VALUES ('Northeast',1,'New York Penn','Newark Penn','2024-12-05 10:30:00','2024-12-05 10:00:00',10,1);
+INSERT INTO `transit_lines_have` VALUES ('Northeast',1,'New York Penn','Newark Penn','2024-12-05 10:30:00','2024-12-05 10:00:00',10,1),('Raritan Valley',212,'Newark Penn','Raritan','2024-12-08 12:00:00','2024-12-08 11:00:00',20,10);
 /*!40000 ALTER TABLE `transit_lines_have` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -399,4 +402,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-12-06 15:13:39
+-- Dump completed on 2024-12-06 15:52:27
