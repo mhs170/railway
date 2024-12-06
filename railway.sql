@@ -116,7 +116,6 @@ CREATE TABLE `has_destination` (
 
 LOCK TABLES `has_destination` WRITE;
 /*!40000 ALTER TABLE `has_destination` DISABLE KEYS */;
-INSERT INTO `has_destination` VALUES ('johndoe',1,'Northeast',2);
 /*!40000 ALTER TABLE `has_destination` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -146,7 +145,6 @@ CREATE TABLE `has_origin` (
 
 LOCK TABLES `has_origin` WRITE;
 /*!40000 ALTER TABLE `has_origin` DISABLE KEYS */;
-INSERT INTO `has_origin` VALUES ('johndoe',1,'Northeast',1);
 /*!40000 ALTER TABLE `has_origin` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -186,14 +184,14 @@ CREATE TABLE `posts` (
   `id` int NOT NULL AUTO_INCREMENT,
   `parent_id` int DEFAULT NULL,
   `type` enum('question','answer') NOT NULL,
-  `body` text NOT NULL,
   `username` varchar(20) NOT NULL,
+  `body` text NOT NULL,
   PRIMARY KEY (`id`),
   KEY `username` (`username`),
   KEY `parent_id` (`parent_id`),
   CONSTRAINT `posts_ibfk_1` FOREIGN KEY (`username`) REFERENCES `users` (`username`) ON DELETE CASCADE,
   CONSTRAINT `posts_ibfk_2` FOREIGN KEY (`parent_id`) REFERENCES `posts` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -202,7 +200,7 @@ CREATE TABLE `posts` (
 
 LOCK TABLES `posts` WRITE;
 /*!40000 ALTER TABLE `posts` DISABLE KEYS */;
-INSERT INTO `posts` VALUES (1,NULL,'question','Test question?','johndoe'),(2,NULL,'question','hello?','johndoe');
+INSERT INTO `posts` VALUES (36,NULL,'question','johndoe',''),(37,NULL,'question','johndoe',''),(38,NULL,'question','johndoe',''),(39,NULL,'question','johndoe',''),(40,NULL,'question','johndoe',''),(41,NULL,'question','johndoe',''),(42,NULL,'question','johndoe',''),(43,NULL,'question','johndoe',''),(44,NULL,'question','johndoe','332'),(45,NULL,'question','johndoe','tar'),(46,NULL,'question','johndoe','hey'),(47,NULL,'question','johndoe','we'),(48,NULL,'question','johndoe','da'),(49,NULL,'question','johndoe','rte'),(50,44,'answer','rep','yes');
 /*!40000 ALTER TABLE `posts` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -253,7 +251,6 @@ CREATE TABLE `reservations` (
 
 LOCK TABLES `reservations` WRITE;
 /*!40000 ALTER TABLE `reservations` DISABLE KEYS */;
-INSERT INTO `reservations` VALUES ('johndoe',1,10,'2024-12-04','2024-12-05');
 /*!40000 ALTER TABLE `reservations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -279,7 +276,7 @@ CREATE TABLE `stations` (
 
 LOCK TABLES `stations` WRITE;
 /*!40000 ALTER TABLE `stations` DISABLE KEYS */;
-INSERT INTO `stations` VALUES (1,'New York Penn','New York City','NY'),(2,'Newark Penn','Newark','NJ');
+INSERT INTO `stations` VALUES (1,'New York Penn','New York City','NY'),(2,'Newark Penn','Newark','NJ'),(22,'Raritan','Raritan','NJ');
 /*!40000 ALTER TABLE `stations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -293,8 +290,8 @@ DROP TABLE IF EXISTS `stops`;
 CREATE TABLE `stops` (
   `transit_line_name` varchar(50) NOT NULL,
   `station_id` int NOT NULL,
-  `stop_arrival` datetime DEFAULT NULL,
-  `stop_departure` datetime DEFAULT NULL,
+  `stop_arrival` time DEFAULT NULL,
+  `stop_departure` time DEFAULT NULL,
   PRIMARY KEY (`transit_line_name`,`station_id`),
   KEY `station_id` (`station_id`),
   CONSTRAINT `stops_ibfk_1` FOREIGN KEY (`transit_line_name`) REFERENCES `transit_lines_have` (`transit_line_name`),
@@ -308,7 +305,7 @@ CREATE TABLE `stops` (
 
 LOCK TABLES `stops` WRITE;
 /*!40000 ALTER TABLE `stops` DISABLE KEYS */;
-INSERT INTO `stops` VALUES ('Northeast',1,'2024-12-05 09:55:00','2024-12-05 10:00:00'),('Northeast',2,'2024-12-05 10:30:00','2024-12-05 10:35:00');
+INSERT INTO `stops` VALUES ('Northeast',1,'09:55:00','10:00:00'),('Northeast',2,'10:30:00','10:35:00');
 /*!40000 ALTER TABLE `stops` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -331,7 +328,7 @@ CREATE TABLE `trains` (
 
 LOCK TABLES `trains` WRITE;
 /*!40000 ALTER TABLE `trains` DISABLE KEYS */;
-INSERT INTO `trains` VALUES (1);
+INSERT INTO `trains` VALUES (1),(212),(21111);
 /*!40000 ALTER TABLE `trains` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -402,4 +399,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-12-05 14:16:45
+-- Dump completed on 2024-12-06 15:13:39
