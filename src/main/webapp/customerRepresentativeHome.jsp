@@ -57,11 +57,32 @@
   <input type="text" id="transit_line_name" name="transit_line_name" required>
   <label for="stationID">Station ID:</label>
   <input type="text" id="stationID" name="stationID" required>
-  <label for="stop_arrival">Stop Arrival:</label>
-  <input type="text" id="stop_arrival" name="stop_arrival" placeholder="hh:mm:ss" required>
-  <label for="stop_departure">Stop Departure:</label>
-  <input type="text" id="stop_departure" name="stop_departure" placeholder="hh:mm:ss" required>
+  <label for="stop_time">Stop Time:</label>
+  <input type="text" id="stop_time" name="stop_time" placeholder="hh:mm:ss" required>
  
+  <button type="submit">Create</button>
+</form>
+</div>
+
+<div>
+<h2>Add Schedule</h2>
+<form method="post" action="createSchedule.jsp">
+  <label for="transitLineName">Transit Line:</label>
+  <input type="text" id="transitLineName" name="transitLineName" required>
+  <label for="trainID">Train ID:</label>
+  <input type="text" id="trainID" name="trainID" required>
+  <label for="origin">Origin Station:</label>
+  <input type="text" id="origin" name="origin" required>
+  <label for="destination">Destination Station:</label>
+  <input type="text" id="destination" name="destination" required>
+  <label for="departure">Departure Date and Time:</label>
+  <input type="text" id="departure" name="departure" placeholder="yyyy:mm:dd hh:mm:ss"  required>
+  <label for="arrival">Arrival Date and Time:</label>
+  <input type="text" id="arrival" name="arrival" placeholder="yyyy:mm:dd hh:mm:ss"  required>
+  <label for="fare">Fixed Fare:</label>
+  <input type="text" id="fare" name="fare" required>
+  <label for="num_stops">Number of Stops:</label>
+  <input type="text" id="num_stops" name="num_stops" required>
   <button type="submit">Create</button>
 </form>
 </div>
