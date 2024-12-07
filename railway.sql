@@ -104,9 +104,9 @@ CREATE TABLE `has_destination` (
   `transit_line_name` varchar(50) DEFAULT NULL,
   `station_id` int DEFAULT NULL,
   PRIMARY KEY (`username`,`res_number`),
-  KEY `transit_line_name` (`transit_line_name`,`station_id`),
+  KEY `has_destination_ibfk_2` (`transit_line_name`,`station_id`),
   CONSTRAINT `has_destination_ibfk_1` FOREIGN KEY (`username`, `res_number`) REFERENCES `reservations` (`username`, `res_number`) ON DELETE CASCADE,
-  CONSTRAINT `has_destination_ibfk_2` FOREIGN KEY (`transit_line_name`, `station_id`) REFERENCES `stops` (`transit_line_name`, `station_id`)
+  CONSTRAINT `has_destination_ibfk_2` FOREIGN KEY (`transit_line_name`, `station_id`) REFERENCES `stops` (`transit_line_name`, `station_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -116,7 +116,6 @@ CREATE TABLE `has_destination` (
 
 LOCK TABLES `has_destination` WRITE;
 /*!40000 ALTER TABLE `has_destination` DISABLE KEYS */;
-INSERT INTO `has_destination` VALUES ('johndoe',2,'Northeast',2);
 /*!40000 ALTER TABLE `has_destination` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -133,10 +132,10 @@ CREATE TABLE `has_origin` (
   `transit_line_name` varchar(50) DEFAULT NULL,
   `station_id` int DEFAULT NULL,
   PRIMARY KEY (`res_number`),
-  KEY `transit_line_name` (`transit_line_name`,`station_id`),
   KEY `has_origin_ibfk_1` (`username`,`res_number`),
+  KEY `has_origin_ibfk_2` (`transit_line_name`,`station_id`),
   CONSTRAINT `has_origin_ibfk_1` FOREIGN KEY (`username`, `res_number`) REFERENCES `reservations` (`username`, `res_number`) ON DELETE CASCADE,
-  CONSTRAINT `has_origin_ibfk_2` FOREIGN KEY (`transit_line_name`, `station_id`) REFERENCES `stops` (`transit_line_name`, `station_id`)
+  CONSTRAINT `has_origin_ibfk_2` FOREIGN KEY (`transit_line_name`, `station_id`) REFERENCES `stops` (`transit_line_name`, `station_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -146,7 +145,6 @@ CREATE TABLE `has_origin` (
 
 LOCK TABLES `has_origin` WRITE;
 /*!40000 ALTER TABLE `has_origin` DISABLE KEYS */;
-INSERT INTO `has_origin` VALUES ('johndoe',2,'Northeast',1);
 /*!40000 ALTER TABLE `has_origin` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -308,7 +306,6 @@ CREATE TABLE `stops` (
 
 LOCK TABLES `stops` WRITE;
 /*!40000 ALTER TABLE `stops` DISABLE KEYS */;
-INSERT INTO `stops` VALUES ('Northeast',1,NULL),('Northeast',2,NULL),('Northeast',22,NULL);
 /*!40000 ALTER TABLE `stops` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -363,7 +360,6 @@ CREATE TABLE `transit_lines_have` (
 
 LOCK TABLES `transit_lines_have` WRITE;
 /*!40000 ALTER TABLE `transit_lines_have` DISABLE KEYS */;
-INSERT INTO `transit_lines_have` VALUES ('Northeast',32,'Newark Penn','New York Penn','2024-12-06 10:30:00','2024-12-06 10:00:00',11,2),('Test',NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `transit_lines_have` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -402,4 +398,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-12-06 18:43:24
+-- Dump completed on 2024-12-06 19:24:10
