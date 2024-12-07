@@ -32,7 +32,7 @@ public class ApplicationDB {
 		}
 		try {
 			//Create a connection to your DB
-			connection = DriverManager.getConnection(connectionUrl,"root", "root1234");
+			connection = DriverManager.getConnection(connectionUrl,"root", "2024fall336project");
 			Statement stmt = connection.createStatement();
 			stmt.execute("USE cs336project");
 		} catch (SQLException e) {

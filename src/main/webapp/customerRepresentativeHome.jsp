@@ -195,6 +195,17 @@
 </form>
 </div>
 
+<div>
+<h2>Find Schedule By Station</h2>
+
+<form method="post" action="findSchedule.jsp">
+  <label for="givenStation">Station Name:</label>
+  <input type="text" id="givenStation" name="givenStation" required>
+  
+ 
+  <button type="submit">Find</button>
+</form>
+</div>
 
 <div>
 <h2>Answer a Question</h2>
