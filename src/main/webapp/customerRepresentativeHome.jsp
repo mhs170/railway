@@ -97,6 +97,16 @@
 </div>
 
 <div>
+<h2>Delete Schedule</h2>
+<form method="post" action="deleteSchedule.jsp" onsubmit="return confirm('Are you sure you want to delete this schedule?');">
+  <label for="transit_line_name">Transit Line:</label>
+  <input type="text" id="transit_line_name" name="transit_line_name" required>
+  <button type="submit">Delete</button>
+</form>
+</div>
+
+
+<div>
 <h2>Answer a Question</h2>
 <form action="answerQuestion.jsp" method="get">
         <button type="submit">View Forum</button>
