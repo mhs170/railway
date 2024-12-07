@@ -208,6 +208,18 @@
 </div>
 
 <div>
+<h2>Find Reservations By Transit Line & Date</h2>
+
+<form method="post" action="findReservations.jsp">
+  <label for="transit_line_name">Transit Line Name:</label>
+  <input type="text" id="transit_line_name" name="transit_line_name" required>
+  <label for="date">Date:</label>
+  <input type="date" id="date" name="date" required>
+  <button type="submit">Find</button>
+</form>
+</div>
+
+<div>
 <h2>Answer a Question</h2>
 <form action="answerQuestion.jsp" method="get">
         <button type="submit">View Forum</button>

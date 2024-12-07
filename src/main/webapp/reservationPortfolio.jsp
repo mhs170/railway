@@ -185,6 +185,7 @@
         <%
         }
         %>
+        <a href="customerHome.jsp">Back to Home Page</a>
     </div>
 </body>
 </html>

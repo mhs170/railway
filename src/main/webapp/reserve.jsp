@@ -145,5 +145,6 @@
         out.println("You are not logged in! Please <a href=\"login.jsp\">login</a> again.");
     }
 %>
+<a href="customerHome.jsp">Back to Home Page</a>
 </body>
 </html>
