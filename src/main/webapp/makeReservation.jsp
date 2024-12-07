@@ -22,7 +22,7 @@
 
     th, td {
         padding: 10px;
-        text-align: left;
+        text-align: center;
     }
 
     th {
@@ -84,8 +84,8 @@
 						<th>Train ID</th>
 						<th>Origin</th>
 						<th>Destination</th>
-						<th>Arrival Time</th>
-						<th>Departure Time</th>
+						<th>Departure Time (from Origin)</th>
+						<th>Arrival Time (at Destination)</th>
 						<th>Fixed Fare</th>
 						<th>Number of Stops</th>
 						<th>Fare Per Stop</th>
@@ -99,8 +99,8 @@
 						<td><%= rs.getString("train_id") %></td>
 						<td><%= rs.getString("origin") %></td>
 						<td><%= rs.getString("destination") %></td>
-						<td><%= rs.getString("arrival") %></td>
 						<td><%= rs.getString("departure") %></td>
+						<td><%= rs.getString("arrival") %></td>
 						<td>$<%= rs.getDouble("fare") %></td>
 						<td><%= rs.getInt("num_stops") %></td>
 						<td>$<%= rs.getDouble("fare_per_stop") %></td>

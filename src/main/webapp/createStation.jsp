@@ -45,6 +45,10 @@ try {
     } else {
         out.println("<p>Failed to insert Station.</p>");
     }
+}catch (SQLIntegrityConstraintViolationException e) {
+    // station ID already exists
+    out.println("<p>Error: Station ID " + stationID + " is already taken. Please choose a different Station ID.</p>");
+    
 } catch (Exception e) {
     out.println("<p>Error: " + e.getMessage() + "</p>");
 } finally {

@@ -75,78 +75,20 @@
  
 
 <!--  Search for train schedules by origin, destination, and/or date of travel-->
+<!-- 
+ - button: click here to search for a train schedule
+ 	- redirect to searchSchedule (with viewAll)
+ - make searchSchedule similar to makeReservation.jsp
+ 	- have input fields inline for origin, dest, date of travel, time of travel, and sortBy and orderBy
+ 		- make at least one field required
+ 	- display all train schedules at the bottom
+ 	- when user hits "search" refresh page (with their search
+ 	- also add view all button
+ -->
 <div>
 	<h2 >Search for Train Schedules</h2>
 	
-	<form method="post" action="searchSchedule.jsp" onsubmit="return validateForm(event)">
-		<!-- Input information -->
-		<div class="schedule-form-container">
-	    	<span>
-	      		<label for="originStation" > Origin Station</label>
-	      		<input id="originStation" type='text' name="originStation" placeholder="Enter Origin"/>
-	    	</span>
-	    	<span>
-	      		<label for="destinationStation" > Destination Station</label>
-	      		<input id="destinationStation" type='text' name="destinationStation" placeholder="Enter Destination"/>
-	    	</span>
-	    	<span>
-	      		<label for="dateOfTravel" >Date Of Travel (not required)</label>
-	      		<input id="dateOfTravel" type='date' name="dateOfTravel" placeholder="YYYY-MM-DD"/>
-	    	</span>
-	    	<span>
-	      		<label for="timeOfTravel" >Time of Travel (not required)</label>
-	      		<input id="timeOfTravel" type='text' name="timeOfTravel" placeholder="HH:MM:SS"/>
-	    	</span>
-	  	</div>
-	  	
-        <!-- Sorting Options -->
-	  	<div>
-            <span>
-                <label for="sortBy">Sort By</label>
-                <select name="sortBy" id="sortBy">
-                    <option value="transit_line_name">Transit Line Name</option>
-                    <option value="train_id">Train ID</option>
-                    <option value="origin">Origin</option>
-                    <option value="destination">Destination</option>
-                    <option value="arrival">Arrival Time</option>
-                    <option value="departure">Departure Time</option>
-                    <option value="fare">Fare</option>
-                    <option value="num_stops">Number of Stops</option>
-                </select>
-            </span>
-            <span>
-                <label for="sortOrder">Order</label>
-                <select name="sortOrder" id="sortOrder">
-                    <option value="ASC">Ascending</option>
-                    <option value="DESC">Descending</option>
-                </select>
-            </span>
-        </div>
-	  	<button type="submit" name="action" value="search"> Search</button>
-	  	<button type="submit" name="action" value="viewAll"> View All Schedules</button>
-	</form>
-	<script>
-	    function validateForm(event) {
-	        const action = event.submitter.value; // Get which button was clicked
-	        if (action === "search") {
-	            const origin = document.getElementById("originStation").value.trim();
-	            const destination = document.getElementById("destinationStation").value.trim();
-	            if (!origin || !destination) {
-                	alert("Origin and Destination are required for searching schedules.");
-	                return false; // Prevent form submission
-	            }
-	            
-	            const date = document.getElementById("dateOfTravel").value.trim();
-	            const time = document.getElementById("timeOfTravel").value.trim();
-	            if (time && !date){
-	            	alert("Cannot provide time with no date.");
-               		return false; // Prevent form submission
-	            }
-	        }
-	        // No validation required for "View All"
-	        return true;
-	    }
-	</script>
+		To search for train schedules, please click <a href="searchSchedule.jsp">here</a>.
 </div>
 
 <!-- view all stops of a specific transit line -->
@@ -171,10 +113,18 @@
         <div>
             <label for="sortBy">Sort By:</label>
             <select name="sortBy" id="sortBy" required>
-                <option value="arrivalASC">Arrival Time (ascending order)</option>
-                <option value="arrivalDESC">Arrival Time (descending order)</option>
-                <option value="departureASC">Departure Time (ascending order)</option>
-                <option value="departureDESC">Departure Time (descending order)</option>
+                <option value="stop_time">Time </option>
+                <option value="station_id">Station ID</option>
+                <option value="station_name">Station Name</option>
+                <option value="city">City</option>
+                <option value="state_abb">State</option>
+            </select>
+        </div>
+        <div>
+            <label for="order">Order:</label>
+            <select name="order" id="order" required>
+                <option value="ASC">Ascending </option>
+                <option value="DESC">Descending</option>
             </select>
         </div>
         <button type="submit">View Stops</button>

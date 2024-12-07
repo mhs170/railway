@@ -39,6 +39,10 @@ if (trainId == null || trainId.trim().isEmpty()) {
         } else {
             out.println("<p>Failed to insert Train ID.</p>");
         }
+    }catch (SQLIntegrityConstraintViolationException e) {
+        // train ID already exists
+        out.println("<p>Error: Train ID " + trainId + " is already taken. Please choose a different Train ID.</p>");
+        
     } catch (Exception e) {
         out.println("<p>Error: " + e.getMessage() + "</p>");
     } finally {

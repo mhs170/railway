@@ -215,7 +215,7 @@ DROP TABLE IF EXISTS `reservation_portfolio`;
 CREATE TABLE `reservation_portfolio` (
   `username` varchar(20) NOT NULL,
   PRIMARY KEY (`username`),
-  CONSTRAINT `reservation_portfolio_ibfk_1` FOREIGN KEY (`username`) REFERENCES `users` (`username`)
+  CONSTRAINT `reservation_portfolio_ibfk_1` FOREIGN KEY (`username`) REFERENCES `users` (`username`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -242,7 +242,7 @@ CREATE TABLE `reservations` (
   `date` date DEFAULT NULL,
   `dateOfDeparture` date DEFAULT NULL,
   PRIMARY KEY (`username`,`res_number`),
-  CONSTRAINT `reservations_ibfk_1` FOREIGN KEY (`username`) REFERENCES `users` (`username`)
+  CONSTRAINT `reservations_ibfk_1` FOREIGN KEY (`username`) REFERENCES `users` (`username`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -296,7 +296,7 @@ CREATE TABLE `stops` (
   PRIMARY KEY (`transit_line_name`,`station_id`),
   KEY `station_id` (`station_id`),
   CONSTRAINT `stops_ibfk_1` FOREIGN KEY (`transit_line_name`) REFERENCES `transit_lines_have` (`transit_line_name`) ON DELETE CASCADE,
-  CONSTRAINT `stops_ibfk_2` FOREIGN KEY (`station_id`) REFERENCES `stations` (`station_id`)
+  CONSTRAINT `stops_ibfk_2` FOREIGN KEY (`station_id`) REFERENCES `stations` (`station_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
