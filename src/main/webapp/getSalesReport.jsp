@@ -115,7 +115,7 @@
 		            } else { 
 		                %>
 		                <div class="container">
-		                    <h3>No sales data found for the selected month.</h3>
+		                    <h3>No sales data found for the selected year.</h3>
 		                </div>
 		                <%
 		            } 

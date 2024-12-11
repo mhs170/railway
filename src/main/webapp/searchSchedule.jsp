@@ -190,6 +190,9 @@
 						query += " '" + dateOfTravel + " " + timeOfTravel + "' BETWEEN departure AND arrival";
 					}else if(!dateOfTravel.equals("")){
 						//user entered only date
+						if(andCheck){
+							query += " AND";
+						}
 						query += " '"+ dateOfTravel + "' BETWEEN DATE(departure) AND DATE(arrival)";
 						
 					}

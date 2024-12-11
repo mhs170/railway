@@ -49,9 +49,6 @@
     tr:nth-child(even) {
         background-color: #f9f9f9; /* Add alternating row colors */
     }
-    tr:hover {
-        background-color: #f1f1f1; /* Highlight rows on hover */
-    }
     a {
         color: #4CAF50;
         text-decoration: none;
