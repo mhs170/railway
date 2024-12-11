@@ -64,7 +64,7 @@
 			ps.setString(1, transitName); 
 			
 			//print query for debugging
-		    out.println("<b>[DEBUG] ps.toString():</b> "+ ps.toString());
+		    //out.println("<b>[DEBUG] ps.toString():</b> "+ ps.toString());
 
 			//execute query
 		    try{

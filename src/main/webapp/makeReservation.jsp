@@ -58,7 +58,7 @@
 			String dateOfTravel = (String) request.getParameter("dateOfTravel");
 			String timeOfTravel = (String) request.getParameter("timeOfTravel");
 			// out.println(depTime);
-			out.println(sortBy);
+			//out.println(sortBy);
 			
 			String query = "SELECT *, fare/num_stops fare_per_stop FROM transit_lines_have";
 			ps = conn.prepareStatement(query);
@@ -66,7 +66,7 @@
 			
 			
 			//print query for debugging
-		    out.println("<b>[DEBUG] ps.toString():</b> "+ ps.toString());
+		    //out.println("<b>[DEBUG] ps.toString():</b> "+ ps.toString());
 
 			//execute query
 		    try{
@@ -103,7 +103,7 @@
 						<td><%= rs.getString("arrival") %></td>
 						<td>$<%= rs.getDouble("fare") %></td>
 						<td><%= rs.getInt("num_stops") %></td>
-						<td>$<%= rs.getDouble("fare_per_stop") %></td>
+						<td>$<%= String.format("%.2f", rs.getDouble("fare_per_stop")) %></td>
 					</tr>
 				<%
 			      	} while(rs.next());

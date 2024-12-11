@@ -241,7 +241,7 @@
 						<td><%= rs.getString("arrival") %></td>
 						<td>$<%= rs.getDouble("fare") %></td>
 						<td><%= rs.getInt("num_stops") %></td>
-						<td>$<%= rs.getDouble("fare_per_stop") %></td>
+						<td>$<%= String.format("%.2f", rs.getDouble("fare_per_stop"))  %></td>
 					</tr>
 				<%
 			      	} while(rs.next());
